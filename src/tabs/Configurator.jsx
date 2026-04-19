@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { ALL_RULES, RULES_BY_CAT, PRESETS, DEFAULT_CONFIG } from '../data/rules.js';
 import { CATEGORIES } from '../data/categories.js';
-import { activeRuleCount, shareURL } from '../utils/game.js';
+import { shareURL } from '../utils/game.js';
 import { qrCodeURL } from '../utils/storage.js';
 import Switch from '../components/Switch.jsx';
 import Modal from '../components/Modal.jsx';
 
-export default function Configurator({ config, setConfig, toggle, setMany, customRules, setCustomRules }) {
+export default function Configurator({ config, configActions, customRules, customActions }) {
   const [showQR, setShowQR] = useState(false);
   const [addingTo, setAddingTo] = useState(null);
   const [customName, setCustomName] = useState('');
@@ -20,19 +20,20 @@ export default function Configurator({ config, setConfig, toggle, setMany, custo
     return n;
   }, [config, customRules]);
 
+  function toggle(id) {
+    configActions.set(id, !config[id]);
+  }
+
   function applyPreset(preset) {
     const next = {};
     if (preset.rules === '*') {
       ALL_RULES.forEach(r => { next[r.id] = true; });
       customRules.forEach(r => { next[r.id] = true; });
-      if (preset.id === 'mythisch' || preset.id === 'alles') {
-        // all on
-      }
     } else {
       ALL_RULES.forEach(r => { next[r.id] = r.core || preset.rules.includes(r.id); });
       customRules.forEach(r => { next[r.id] = false; });
     }
-    setConfig(next);
+    configActions.replace(next);
   }
 
   function categoryAllOn(catId, on) {
@@ -42,25 +43,23 @@ export default function Configurator({ config, setConfig, toggle, setMany, custo
       updates[r.id] = on;
     });
     customRules.filter(r => r.cat === catId).forEach(r => { updates[r.id] = on; });
-    setMany(updates);
+    configActions.setMany(updates);
   }
 
   function submitCustom() {
     if (!customName.trim() || !addingTo) return;
     const id = 'custom_' + Date.now();
     const newRule = { id, cat: addingTo, name: customName.trim(), desc: customDesc.trim(), custom: true };
-    setCustomRules([...customRules, newRule]);
-    setConfig({ ...config, [id]: true });
+    customActions.add(newRule);
+    configActions.set(id, true);
     setCustomName('');
     setCustomDesc('');
     setAddingTo(null);
   }
 
   function removeCustom(id) {
-    setCustomRules(customRules.filter(r => r.id !== id));
-    const next = { ...config };
-    delete next[id];
-    setConfig(next);
+    customActions.remove(id);
+    configActions.set(id, undefined);
   }
 
   const url = shareURL(config);
@@ -82,7 +81,7 @@ export default function Configurator({ config, setConfig, toggle, setMany, custo
         </div>
         <div className="row" style={{ gap: 8, marginTop: 8 }}>
           <button className="btn" onClick={() => setShowQR(true)}>📱 Deel config</button>
-          <button className="btn-secondary" onClick={() => setConfig({ ...DEFAULT_CONFIG })}>Reset naar default</button>
+          <button className="btn-secondary" onClick={() => configActions.replace({ ...DEFAULT_CONFIG })}>Reset naar default</button>
         </div>
       </div>
 

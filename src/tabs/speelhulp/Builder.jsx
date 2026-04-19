@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react';
 import { BUILD_ITEMS, RESOURCES } from '../../data/costs.js';
-import { load, BANK_KEY } from '../../utils/storage.js';
+import { useYBank } from '../../utils/useYjs.js';
 
 export default function Builder({ config, currentPlayer }) {
+  const [bank] = useYBank();
   const [manual, setManual] = useState(() => {
-    const bank = load(BANK_KEY, null);
-    if (bank && bank[currentPlayer]) return { ...bank[currentPlayer].resources };
-    return { hout: 0, baksteen: 0, graan: 0, wol: 0, erts: 0, vis: 0, specerij: 0, goud: 0 };
+    const current = bank[currentPlayer]?.resources;
+    return current ? { ...current } : { hout: 0, baksteen: 0, graan: 0, wol: 0, erts: 0, vis: 0, specerij: 0, goud: 0 };
   });
 
   function refreshFromBank() {
-    const bank = load(BANK_KEY, null);
-    if (bank && bank[currentPlayer]) setManual({ ...bank[currentPlayer].resources });
+    const current = bank[currentPlayer]?.resources;
+    if (current) setManual({ ...current });
   }
 
   const activeResources = RESOURCES.filter(r => !r.rule || config[r.rule]);

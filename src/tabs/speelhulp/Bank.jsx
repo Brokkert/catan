@@ -1,46 +1,32 @@
-import { useEffect, useState } from 'react';
 import { RESOURCES } from '../../data/costs.js';
-import { load, save, BANK_KEY } from '../../utils/storage.js';
+import { useYBank } from '../../utils/useYjs.js';
 
 const PLAYER_COLORS = ['#e55', '#3a7', '#5aa9e6', '#e8b923'];
 const PLAYER_NAMES = ['Rood', 'Groen', 'Blauw', 'Geel'];
 
-function emptyPlayer() {
-  return {
-    resources: { hout: 0, baksteen: 0, graan: 0, wol: 0, erts: 0, vis: 0, specerij: 0, goud: 0 },
-    bevolking: 0,
-  };
-}
-
 export default function Bank({ config, currentPlayer, setCurrentPlayer }) {
-  const [state, setState] = useState(() =>
-    load(BANK_KEY, [emptyPlayer(), emptyPlayer(), emptyPlayer(), emptyPlayer()])
-  );
-
-  useEffect(() => { save(BANK_KEY, state); }, [state]);
+  const [bank, updatePlayer] = useYBank();
 
   const active = RESOURCES.filter(r => !r.rule || config[r.rule]);
-  const p = state[currentPlayer];
+  const p = bank[currentPlayer] || { resources: {}, bevolking: 0 };
 
   function set(key, delta) {
-    setState(s => {
-      const copy = s.map(x => ({ ...x, resources: { ...x.resources } }));
-      copy[currentPlayer].resources[key] = Math.max(0, (copy[currentPlayer].resources[key] || 0) + delta);
-      return copy;
-    });
+    updatePlayer(currentPlayer, (prev) => ({
+      ...prev,
+      resources: { ...prev.resources, [key]: Math.max(0, (prev.resources[key] || 0) + delta) },
+    }));
   }
 
   function setBev(delta) {
-    setState(s => {
-      const copy = s.map(x => ({ ...x }));
-      copy[currentPlayer].bevolking = Math.max(0, copy[currentPlayer].bevolking + delta);
-      return copy;
-    });
+    updatePlayer(currentPlayer, (prev) => ({
+      ...prev,
+      bevolking: Math.max(0, (prev.bevolking || 0) + delta),
+    }));
   }
 
-  const zielen = p.bevolking;
+  const zielen = p.bevolking || 0;
   const voedselNodig = Math.ceil(zielen / 3);
-  const voedselAanwezig = (p.resources.graan || 0) + (p.resources.vis || 0);
+  const voedselAanwezig = (p.resources?.graan || 0) + (p.resources?.vis || 0);
 
   return (
     <div className="card">
@@ -61,7 +47,7 @@ export default function Bank({ config, currentPlayer, setCurrentPlayer }) {
           <span className="icon">{r.icon}</span>
           <span className="name">{r.name}</span>
           <button className="plusminus" onClick={() => set(r.id, -1)}>−</button>
-          <span className="value">{p.resources[r.id] || 0}</span>
+          <span className="value">{p.resources?.[r.id] || 0}</span>
           <button className="plusminus" onClick={() => set(r.id, 1)}>+</button>
         </div>
       ))}

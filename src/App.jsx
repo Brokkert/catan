@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_CONFIG, ALL_RULES } from './data/rules.js';
 import { gameName, estimateMinutes, difficultyStars, urlToCfg } from './utils/game.js';
-import { load, save, STORAGE_KEY, CUSTOM_KEY } from './utils/storage.js';
+import { yConfig, yCustomRules, doc, waitForSync } from './utils/yjsSync.js';
+import { useYConfig, useYCustomRules } from './utils/useYjs.js';
 import Configurator from './tabs/Configurator.jsx';
 import Printlijst from './tabs/Printlijst.jsx';
 import SetupWizard from './tabs/SetupWizard.jsx';
@@ -18,23 +19,39 @@ const TABS = [
 
 export default function App() {
   const [tab, setTab] = useState('cfg');
-  const [config, setConfig] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    const fromURL = params.get('rules');
-    const customLoaded = load(CUSTOM_KEY, []);
-    if (fromURL) {
-      return urlToCfg(fromURL, customLoaded);
-    }
-    const stored = load(STORAGE_KEY, null);
-    return stored || { ...DEFAULT_CONFIG };
-  });
-  const [customRules, setCustomRules] = useState(() => load(CUSTOM_KEY, []));
+  const [ready, setReady] = useState(false);
+  const [config, configActions] = useYConfig();
+  const [customRules, customActions] = useYCustomRules();
 
-  useEffect(() => { save(STORAGE_KEY, config); }, [config]);
-  useEffect(() => { save(CUSTOM_KEY, customRules); }, [customRules]);
+  useEffect(() => {
+    (async () => {
+      await waitForSync();
+      const params = new URLSearchParams(window.location.search);
+      const fromURL = params.get('rules');
+      doc.transact(() => {
+        if (fromURL) {
+          const next = urlToCfg(fromURL, yCustomRules.toArray());
+          yConfig.clear();
+          Object.entries(next).forEach(([k, v]) => yConfig.set(k, v));
+        } else if (yConfig.size === 0) {
+          Object.entries(DEFAULT_CONFIG).forEach(([k, v]) => yConfig.set(k, v));
+        } else {
+          ALL_RULES.forEach(r => {
+            if (yConfig.get(r.id) === undefined) yConfig.set(r.id, r.def);
+          });
+        }
+      });
+      setReady(true);
+    })();
+  }, []);
 
-  const toggle = (id) => setConfig(c => ({ ...c, [id]: !c[id] }));
-  const setMany = (updates) => setConfig(c => ({ ...c, ...updates }));
+  if (!ready) {
+    return (
+      <div style={{ padding: 40, textAlign: 'center', color: 'var(--gold)' }}>
+        <p>Laden…</p>
+      </div>
+    );
+  }
 
   const name = gameName(config);
   const mins = estimateMinutes(config);
@@ -54,11 +71,9 @@ export default function App() {
         {tab === 'cfg' && (
           <Configurator
             config={config}
-            setConfig={setConfig}
-            toggle={toggle}
-            setMany={setMany}
+            configActions={configActions}
             customRules={customRules}
-            setCustomRules={setCustomRules}
+            customActions={customActions}
           />
         )}
         {tab === 'print' && <Printlijst config={config} />}

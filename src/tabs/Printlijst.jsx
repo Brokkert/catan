@@ -1,12 +1,10 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { PRINT_ITEMS, SIZE_WEIGHT, COLOR_LABEL } from '../data/prints.js';
-import { load, save, PRINTED_KEY } from '../utils/storage.js';
+import { useYPrinted } from '../utils/useYjs.js';
 
 export default function Printlijst({ config }) {
-  const [printed, setPrinted] = useState(() => load(PRINTED_KEY, {}));
+  const [printed, togglePrinted] = useYPrinted();
   const [filter, setFilter] = useState('all'); // all, todo, custom
-
-  useEffect(() => { save(PRINTED_KEY, printed); }, [printed]);
 
   const activeItems = useMemo(() => {
     return PRINT_ITEMS.filter(it => it.always || config[it.rule]);
@@ -45,9 +43,7 @@ export default function Printlijst({ config }) {
   }, [activeItems]);
   const totalGram = Object.values(filament).reduce((a, b) => a + b, 0);
 
-  function toggle(id) {
-    setPrinted({ ...printed, [id]: !printed[id] });
-  }
+  const toggle = togglePrinted;
 
   return (
     <div>
