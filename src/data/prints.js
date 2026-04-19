@@ -17,7 +17,8 @@ export const PRINT_ITEMS = [
   { id: 'wegen', name: 'Wegen', qty: 15, size: 'small', color: 'player', desc: '15 wegen per speler', stl: STL_BASIS, always: true, perPlayer: true },
   { id: 'rover', name: 'Rover', qty: 1, size: 'medium', color: 'neutral', desc: 'Roverfiguur', stl: STL_BASIS, always: true },
   { id: 'havens', name: 'Haventegels', qty: 5, size: 'overlay', color: 'mixed', desc: '5 haventegels', stl: STL_BASIS, always: true },
-  { id: 'magnetisch', name: 'Magnetische basisplaten', qty: 50, size: 'hex', color: 'neutral', desc: 'Basisplaten voor hexen', stl: STL_BASIS, always: true },
+  { id: 'basis_land', name: 'Basisplaat — land', qty: 30, size: 'hex', color: 'neutral', desc: 'Magnetische basisplaat voor land-hexen (bruin/grijs filament)', stl: STL_BASIS, always: true },
+  { id: 'basis_water', name: 'Basisplaat — water', qty: 24, size: 'hex', color: 'blue', desc: 'Magnetische basisplaat voor water-hexen (blauw filament)', stl: STL_BASIS, always: true },
 
   // procedureel
   { id: 'jungle_hex', name: 'Jungle-hex', qty: 3, size: 'hex', color: 'mixed', desc: 'Jungletegel voor specerij', custom: true, rule: 'procedureel' },

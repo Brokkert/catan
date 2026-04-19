@@ -449,6 +449,7 @@ input, textarea {
   cursor: pointer;
 }
 .checkbox.checked { background: var(--gold); border-color: var(--gold); color: #000; font-weight: 900; }
+.checkbox.partial { background: var(--orange); border-color: var(--orange); color: #000; font-weight: 900; }
 
 .stl-badge {
   display: inline-block;

@@ -95,13 +95,20 @@ export function useYCustomRules() {
   return [rules, { add, remove }];
 }
 
-// Printed — Y.Map of item id -> boolean
+// Printed — Y.Map of item id -> number (count printed)
 export function useYPrinted() {
   const printed = useObserved(yPrinted, () => Object.fromEntries(yPrinted.entries()));
-  const toggle = useCallback((id) => {
-    yPrinted.set(id, !yPrinted.get(id));
+  const setCount = useCallback((id, count) => {
+    yPrinted.set(id, Math.max(0, count | 0));
   }, []);
-  return [printed, toggle];
+  const toggle = useCallback((id, fullQty) => {
+    const current = yPrinted.get(id) || 0;
+    const target = typeof current === 'boolean'
+      ? (current ? 0 : fullQty)
+      : (current >= fullQty ? 0 : fullQty);
+    yPrinted.set(id, target);
+  }, []);
+  return [printed, { setCount, toggle }];
 }
 
 // Bank — Y.Array of 4 player objects
