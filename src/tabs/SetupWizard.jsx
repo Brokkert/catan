@@ -1,7 +1,11 @@
 import { useMemo, useState } from 'react';
 import HexBoard, { axialToPixel, renderHex } from '../components/HexTile.jsx';
 import { usePrintableQty } from '../utils/printableQty.js';
-import { useYParams } from '../utils/useYjs.js';
+import { useYParams, useYPrinted } from '../utils/useYjs.js';
+import { PRINT_ITEMS } from '../data/prints.js';
+import { useYPrintOverrides, useYCustomPrints } from '../utils/useYjs.js';
+import BoardPreview from '../components/BoardPreview.jsx';
+import Modal from '../components/Modal.jsx';
 
 const PLAYER_COLORS = ['#d33', '#4a4', '#38b', '#e8b923'];
 const PLAYER_NAMES = ['Rood', 'Groen', 'Blauw', 'Geel'];
@@ -68,8 +72,28 @@ export default function SetupWizard({ config }) {
   const qty = usePrintableQty();
   const [params] = useYParams();
   const [mainSeed, setMainSeed] = useState(1);
+  const [printed] = useYPrinted();
+  const [overrides] = useYPrintOverrides();
+  const [customs] = useYCustomPrints();
+
+  const activeItems = useMemo(() => {
+    const base = PRINT_ITEMS
+      .filter(it => it.always || config[it.rule])
+      .map(it => {
+        const o = overrides[it.id];
+        if (!o) return it;
+        return { ...it, name: o.name ?? it.name, qty: o.qty ?? it.qty, hidden: o.hidden };
+      })
+      .filter(it => !it.hidden);
+    const cus = customs.map(c => ({ ...c, custom: true, isCustomAdded: true }));
+    return [...base, ...cus];
+  }, [config, overrides, customs]);
+
   const reshuffle = () => setMainSeed(Math.floor(Math.random() * 1_000_000));
-  const steps = useMemo(() => buildSteps(config, qty, params, mainSeed, reshuffle), [config, qty, params, mainSeed]);
+  const steps = useMemo(
+    () => buildSteps(config, qty, params, mainSeed, reshuffle, activeItems, printed),
+    [config, qty, params, mainSeed, activeItems, printed]
+  );
   const [step, setStep] = useState(0);
   const current = steps[step];
 
@@ -111,7 +135,7 @@ function Chips({ items }) {
   );
 }
 
-function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
+function buildSteps(cfg, qty, params, mainSeed, reshuffle, activeItems, printed) {
   const steps = [];
 
   steps.push({
@@ -142,6 +166,18 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
       </>
     ),
   });
+
+  if (!cfg.procedureel) {
+    steps.push({
+      title: 'Genereer het volledige bord',
+      render: () => (
+        <>
+          <p>Omdat je zonder <b>procedurele ontdekking</b> speelt, plaats je alle tegels vooraf. Hier is een willekeurige opstelling van jouw volledige voorraad — tik 🎲 tot je een mooie vindt.</p>
+          <BoardPreview activeItems={activeItems} printed={printed} />
+        </>
+      ),
+    });
+  }
 
   if (cfg.procedureel) {
     steps.push({
