@@ -30,8 +30,8 @@ function mainIslandTiles(cfg, seed = 1) {
   ];
 }
 
-function mainPlusWater(cfg) {
-  const main = mainIslandTiles(cfg);
+function mainPlusWater(cfg, seed = 1) {
+  const main = mainIslandTiles(cfg, seed);
   // Surrounding water ring (12 hexes in Catan Seafarers-style)
   const water = [];
   const waterCoords = [
@@ -134,7 +134,7 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
     render: () => (
       <>
         <p>Leg <b>{params.waterring_tegels} watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
-        <HexBoard tiles={mainPlusWater(cfg)} size={26} />
+        <HexBoard tiles={mainPlusWater(cfg, mainSeed)} size={26} />
         <Chips items={[
           `Water geprint: ${qty('water_hex')}×`,
           `Basisplaten water: ${qty('basis_water')}×`,
@@ -205,7 +205,7 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
           <li>1× Graan (2:1)</li>
         </ul>
         {/* Small demo with havens as triangles on coast corners */}
-        <HexBoard tiles={mainPlusWater(cfg)} size={22} extra={(() => {
+        <HexBoard tiles={mainPlusWater(cfg, mainSeed)} size={22} extra={(() => {
           const haven = [
             { q: 1, r: -2, label: '3:1' },
             { q: -2, r: 1, label: '3:1' },
@@ -233,7 +233,7 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
       <>
         <p>Leg nummertokens op de {cfg.vulkaan ? 'productieve' : 'niet-woestijn'}-hexen van het hoofdeiland.{cfg.procedureel && ' De overige nummertokens hou je apart — die gebruik je voor productieve tegels die je tijdens het spel ontdekt.'}</p>
         <p className="small muted">Voorbeeld: 6 en 8 krijgen <span style={{ color: 'var(--red)' }}>rode</span> tekst (meest kans).</p>
-        <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
+        <HexBoard tiles={mainIslandTiles(cfg, mainSeed)} size={36} />
       </>
     ),
   });
@@ -382,7 +382,7 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
         <>
           <p>In <b>omgekeerde volgorde</b> plaatst elke speler <b>{params.startdorpen_per_speler} dorpen + {params.startwegen_per_speler} wegen</b>.</p>
           {cfg.scheepswerf && <p className="small">⛵ Minstens 1 dorp moet op een <b>kustintersectie</b> liggen.</p>}
-          <HexBoard tiles={mainIslandTiles(cfg)} size={size} extra={settlementEls} />
+          <HexBoard tiles={mainIslandTiles(cfg, mainSeed)} size={size} extra={settlementEls} />
           <Chips items={PLAYER_NAMES.map((n) => `${n}: ${params.startdorpen_per_speler} dorpen`)} />
         </>
       );
