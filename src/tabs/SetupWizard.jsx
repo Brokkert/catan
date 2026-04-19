@@ -106,7 +106,7 @@ function buildSteps(cfg, qty) {
     title: 'Leg het hoofdeiland',
     render: () => (
       <>
-        <p>Plaats de <b>7 landtegels</b> in standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
+        <p>Plaats <b>{qty('land_hex', 7)} landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
         <p className="small muted">Voorbeeld met nummertokens:</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
@@ -117,11 +117,10 @@ function buildSteps(cfg, qty) {
     title: 'Leg de waterring',
     render: () => (
       <>
-        <p>Leg <b>12 watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' Houd extra watertegels bij de hand voor ontdekkingen.'}</p>
+        <p>Leg <b>{Math.min(qty('water_hex'), 12)} watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
         <HexBoard tiles={mainPlusWater(cfg)} size={26} />
         <Chips items={[
-          `Benodigd: 12 watertegels`,
-          `Je qty: ${qty('water_hex')}×`,
+          `Water geprint: ${qty('water_hex')}×`,
           `Basisplaten water: ${qty('basis_water')}×`,
         ]} />
       </>
@@ -204,7 +203,7 @@ function buildSteps(cfg, qty) {
       title: 'Leg getijdenmarkers',
       render: () => (
         <>
-          <p>Leg markers <b>①②③</b> op 3 willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
+          <p>Leg <b>{qty('getijden_markers', 3)} getijdenmarkers</b> (①②③) op willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
           <div className="row wrap" style={{ gap: 10, justifyContent: 'center', fontSize: 32 }}>
             <span>①</span><span>②</span><span>③</span>
           </div>
@@ -299,7 +298,7 @@ function buildSteps(cfg, qty) {
         { c: cfg.stadsmuur, label: `${qty('stadsmuur_token', 2)} stadsmuren` },
         { c: cfg.helden, label: `${qty('held_fig', 1)} held` },
         { c: cfg.mythische_eenheden, label: `${qty('mythische_units', 8)} mythische eenheden + ${qty('titan_fig', 1)} titan` },
-        { c: cfg.tijdperken, label: `1 tijdperkmarker` },
+        { c: cfg.tijdperken, label: `${qty('tijdperkmarker', 1)} tijdperkmarker` },
       ];
       return (
         <>
