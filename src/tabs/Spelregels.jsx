@@ -82,7 +82,7 @@ function buildPhases(cfg) {
     n: 8, name: 'Ontdekking', icon: '🧭',
     summary: 'Trek nieuwe tegel als je schip een onverkend veld bereikt.',
     details: [
-      'Trek blind uit ontdekking-bak (of zak).',
+      'Pak de volgende tegel uit de Ontdekking-bak (vooraf geshuffled in vakken).',
       'Plaats de tegel, handel eventueel effect af (monster, ruïne, etc).',
       cfg.kompas ? 'Kompas-item: +1 tegel per ontdekking.' : '',
     ].filter(Boolean),

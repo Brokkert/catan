@@ -130,10 +130,10 @@ function buildSteps(cfg, qty) {
 
   if (cfg.procedureel) {
     steps.push({
-      title: 'Vul de ontdekkingszak',
+      title: 'Vul de Ontdekking-bak',
       render: () => (
         <>
-          <p>Stop alle ontdekkingstegels in een <b>ondoorzichtige zak</b> (3D-tegels kun je niet omdraaien). Bij elke ontdekking trek je blind een tegel uit de zak. Tel bij elkaar wat erin moet:</p>
+          <p>Plaats alle ontdekkingstegels <b>geshufflede in de Ontdekking-bak</b> (3D-tegels kun je niet omdraaien, dus we gebruiken een doos met vakken waar je de volgorde vooraf door elkaar legt). Tijdens spel pak je steeds de volgende uit het eerstvolgende vak — niemand weet welke tegel er volgt. Tel bij elkaar wat erin moet:</p>
           <ul>
             <li>Open zee: <b>12</b></li>
             {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
@@ -148,8 +148,7 @@ function buildSteps(cfg, qty) {
             {cfg.goudmijn && <li>Goudmijn: <b>{qty('goudmijn_hex', 1)}</b></li>}
             {cfg.goudrivier && <li>Goudrivier: <b>{qty('goudrivier_hex', 1)}</b></li>}
           </ul>
-          <p className="small muted"><b>Tip</b>: print een <code>Ontdekking-bak</code> met vakken. Plaats de geshufflede tegels vooraf in volgorde in de vakken — tijdens spel trek je simpel uit het eerstvolgende vak. Geen zak nodig.</p>
-          <p className="small muted">Alternatief: ondoorzichtige stofzak of emmer met deksel.</p>
+          <p className="small muted"><b>Shuffle-truc</b>: draai je om, laat een andere speler de tegels willekeurig in de vakken leggen. Of schud in een emmer en laat ze per vak "vallen" zonder te kijken.</p>
         </>
       ),
     });
@@ -237,7 +236,7 @@ function buildSteps(cfg, qty) {
     render: () => (
       <ul>
         {cfg.kaartstapel && <li>Leg de <b>{qty('nummerkaarten', 36)} nummer-trekschijven</b> vooraf geshuffled in een kleine trek-bak (vervangt dobbelsteen)</li>}
-        <li>Leg de <b>{qty('ontwik_tokens', 32)} ontwikkelings-scrolls</b> in een trek-bakje of ondoorzichtige pot</li>
+        <li>Leg de <b>{qty('ontwik_tokens', 32)} ontwikkelings-scrolls</b> geshuffled in een kleine trek-bak met vakken</li>
         {cfg.vis && <li>Leg de <b>{qty('vis_kaarten', 19)} vis-tokens</b> bij de bank</li>}
         {cfg.specerij && <li>Leg de <b>{qty('specerij_kaarten', 14)} specerij-potjes</b> bij de bank</li>}
         {cfg.gildehall && <li>Leg de <b>{qty('gildekaarten', 6)} gilde-insignias</b> open zichtbaar bij de gildehall-voorraad</li>}
