@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { doc, yConfig, yCustomRules, yPrinted, yBank } from './yjsSync.js';
+import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta } from './yjsSync.js';
 
 function useObserved(target, getValue) {
   const [value, setValue] = useState(getValue);
@@ -16,20 +16,31 @@ function useObserved(target, getValue) {
 export function useYConfig() {
   const config = useObserved(yConfig, () => Object.fromEntries(yConfig.entries()));
   const set = useCallback((id, value) => {
-    yConfig.set(id, value);
+    doc.transact(() => {
+      yConfig.set(id, value);
+      yMeta.set('preset', null);
+    });
   }, []);
   const setMany = useCallback((updates) => {
     doc.transact(() => {
       Object.entries(updates).forEach(([k, v]) => yConfig.set(k, v));
+      yMeta.set('preset', null);
     });
   }, []);
-  const replace = useCallback((next) => {
+  const replace = useCallback((next, presetId = null) => {
     doc.transact(() => {
       yConfig.clear();
       Object.entries(next).forEach(([k, v]) => yConfig.set(k, v));
+      yMeta.set('preset', presetId);
     });
   }, []);
   return [config, { set, setMany, replace }];
+}
+
+// Meta — Y.Map of misc state
+export function useYMeta() {
+  const meta = useObserved(yMeta, () => Object.fromEntries(yMeta.entries()));
+  return meta;
 }
 
 // Custom rules — Y.Array of rule objects

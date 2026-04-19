@@ -3,10 +3,13 @@ import { ALL_RULES, RULES_BY_CAT, PRESETS, DEFAULT_CONFIG } from '../data/rules.
 import { CATEGORIES } from '../data/categories.js';
 import { shareURL } from '../utils/game.js';
 import { qrCodeURL } from '../utils/storage.js';
+import { useYMeta } from '../utils/useYjs.js';
 import Switch from '../components/Switch.jsx';
 import Modal from '../components/Modal.jsx';
 
 export default function Configurator({ config, configActions, customRules, customActions }) {
+  const meta = useYMeta();
+  const selectedPreset = meta.preset;
   const [showQR, setShowQR] = useState(false);
   const [addingTo, setAddingTo] = useState(null);
   const [customName, setCustomName] = useState('');
@@ -36,19 +39,8 @@ export default function Configurator({ config, configActions, customRules, custo
     return next;
   }
 
-  function presetMatches(preset) {
-    const expected = expectedConfigFor(preset);
-    for (const [id, val] of Object.entries(expected)) {
-      if (!!config[id] !== !!val) return false;
-    }
-    for (const id of Object.keys(config)) {
-      if (!(id in expected) && !!config[id]) return false;
-    }
-    return true;
-  }
-
   function applyPreset(preset) {
-    configActions.replace(expectedConfigFor(preset));
+    configActions.replace(expectedConfigFor(preset), preset.id);
   }
 
   function categoryAllOn(catId, on) {
@@ -90,7 +82,7 @@ export default function Configurator({ config, configActions, customRules, custo
           {PRESETS.map(p => (
             <button
               key={p.id}
-              className={`preset-btn ${presetMatches(p) ? 'active' : ''}`}
+              className={`preset-btn ${selectedPreset === p.id ? 'active' : ''}`}
               onClick={() => applyPreset(p)}
             >
               {p.name}
