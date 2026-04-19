@@ -8,8 +8,13 @@ const STL_SEAFARERS = 'https://www.thingiverse.com/thing:3072272';
 const STL_CK = 'https://www.thingiverse.com/thing:2865138';
 
 export const PRINT_ITEMS = [
-  // Always needed (basisspel)
-  { id: 'land_hex', name: 'Landtegels hoofdeiland', qty: 7, size: 'hex', color: 'mixed', desc: 'Bos, heuvels, bergen, akkers, weiden, woestijn', stl: STL_BASIS, always: true },
+  // Always needed (basisspel) — land hex types per soort
+  { id: 'bos_hex', name: 'Landtegel — bos 🌲', qty: 7, size: 'hex', color: 'mixed', desc: 'Produceert hout', stl: STL_BASIS, always: true },
+  { id: 'akkers_hex', name: 'Landtegel — akkers 🌾', qty: 7, size: 'hex', color: 'mixed', desc: 'Produceert graan', stl: STL_BASIS, always: true },
+  { id: 'weiden_hex', name: 'Landtegel — weiden 🐑', qty: 7, size: 'hex', color: 'mixed', desc: 'Produceert wol', stl: STL_BASIS, always: true },
+  { id: 'heuvels_hex', name: 'Landtegel — heuvels 🧱', qty: 7, size: 'hex', color: 'mixed', desc: 'Produceert baksteen', stl: STL_BASIS, always: true },
+  { id: 'bergen_hex', name: 'Landtegel — bergen ⛰️', qty: 7, size: 'hex', color: 'mixed', desc: 'Produceert erts', stl: STL_BASIS, always: true },
+  { id: 'woestijn_hex', name: 'Landtegel — woestijn 🏜️', qty: 1, size: 'hex', color: 'mixed', desc: 'Geen productie, rover start hier', stl: STL_BASIS, always: true },
   { id: 'water_hex', name: 'Watertegels', qty: 50, size: 'hex', color: 'blue', desc: 'Blanco watertegels (binnenring + ontdekking + reserve)', stl: STL_BASIS, always: true },
   { id: 'nummer_tokens', name: 'Nummertokens reserve', qty: 15, size: 'small', color: 'mixed', desc: 'Tokens 2-12 (reserve)', stl: STL_NUMMER, always: true },
   { id: 'dorpen', name: 'Dorpen', qty: 5, size: 'medium', color: 'player', desc: '5 dorpen per speler', stl: STL_BASIS, always: true, perPlayer: true },
@@ -24,7 +29,6 @@ export const PRINT_ITEMS = [
   // procedureel
   { id: 'jungle_hex', name: 'Jungle-hex', qty: 3, size: 'hex', color: 'mixed', desc: 'Jungletegel voor specerij', custom: true, rule: 'procedureel' },
   { id: 'koraal_hex', name: 'Koraalrif-hex', qty: 3, size: 'hex', color: 'blue', desc: 'Koraalrif voor vis', custom: true, rule: 'procedureel' },
-  { id: 'extra_land', name: 'Extra land-hexes', qty: 12, size: 'hex', color: 'mixed', desc: 'Extra bos/heuvels/bergen/akkers/weiden (2-3 elk)', stl: STL_BASIS, rule: 'procedureel' },
 
   // vulkaan
   { id: 'vulkaan_hex', name: 'Vulkaan-hex', qty: 1, size: 'hex', color: 'mixed', desc: 'Vulkaantegel', custom: true, rule: 'vulkaan' },

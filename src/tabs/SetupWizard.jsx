@@ -108,7 +108,8 @@ function buildSteps(cfg, qty, params) {
     title: 'Leg het hoofdeiland',
     render: () => (
       <>
-        <p>Plaats <b>{params.hoofdeiland_tegels} landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
+        <p>Plaats <b>{params.hoofdeiland_tegels} landtegels</b> <b>door elkaar</b> (willekeurig gemengd) in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>} Anders: midden = woestijn.</p>
+        <p className="small muted">Tip: pak uit iedere soort landtegel één, schud ze en leg ze neer. Zo is elke game anders.</p>
         <p className="small muted">Voorbeeld met nummertokens:</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
@@ -137,9 +138,13 @@ function buildSteps(cfg, qty, params) {
           <p>Leg alle ontdekkingstegels <b>in willekeurige volgorde in de Ontdekking-bak</b>. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke eraan komt. Tel bij elkaar wat erin moet:</p>
           <ul>
             <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - params.waterring_tegels)}</b>, water-prints minus de {params.waterring_tegels} van de ring)</li>
-            {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
-            {cfg.vis && <li>Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
-            <li>Extra land (bos/heuvels/bergen/akkers/weiden): <b>{qty('extra_land', 12)}</b></li>
+            {cfg.specerij && <li>🌴 Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
+            {cfg.vis && <li>🐟 Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
+            <li>🌲 Bos (exclusief 2 op hoofdeiland): <b>{Math.max(0, qty('bos_hex', 7) - 2)}</b></li>
+            <li>🌾 Akkers (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('akkers_hex', 7) - 1)}</b></li>
+            <li>🐑 Weiden (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('weiden_hex', 7) - 1)}</b></li>
+            <li>🧱 Heuvels (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('heuvels_hex', 7) - 1)}</b></li>
+            <li>⛰️ Bergen (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('bergen_hex', 7) - 1)}</b></li>
             {cfg.ruine && <li>Ruïnes: <b>{qty('ruine_hex', 2)}</b></li>}
             {cfg.maalstroom && <li>Maalstroom: <b>{qty('maalstroom_hex', 1)}</b></li>}
             {cfg.rif && <li>Rif (stenen): <b>{qty('rif_hex', 2)}</b></li>}

@@ -2,21 +2,12 @@ import { useMemo, useState } from 'react';
 
 // Tile types with display color, gradient shade, emoji, and whether it produces (gets number token)
 const HEX_TYPES = {
-  land_hex: [
-    { type: 'bos', color: '#2d5a2d', shade: '#1a3a1a', emoji: '🌲', produces: true, count: 2 },
-    { type: 'heuvels', color: '#c2622c', shade: '#7a3d18', emoji: '🧱', produces: true, count: 1 },
-    { type: 'bergen', color: '#6b6b6b', shade: '#3d3d3d', emoji: '⛰️', produces: true, count: 1 },
-    { type: 'akkers', color: '#e0b93a', shade: '#9c7d1a', emoji: '🌾', produces: true, count: 1 },
-    { type: 'weiden', color: '#7bb33a', shade: '#4c7822', emoji: '🐑', produces: true, count: 1 },
-    { type: 'woestijn', color: '#caa86a', shade: '#8a6f3a', emoji: '🏜️', produces: false, count: 1 },
-  ],
-  extra_land: [
-    { type: 'bos', color: '#2d5a2d', shade: '#1a3a1a', emoji: '🌲', produces: true, count: 3 },
-    { type: 'heuvels', color: '#c2622c', shade: '#7a3d18', emoji: '🧱', produces: true, count: 2 },
-    { type: 'bergen', color: '#6b6b6b', shade: '#3d3d3d', emoji: '⛰️', produces: true, count: 2 },
-    { type: 'akkers', color: '#e0b93a', shade: '#9c7d1a', emoji: '🌾', produces: true, count: 3 },
-    { type: 'weiden', color: '#7bb33a', shade: '#4c7822', emoji: '🐑', produces: true, count: 2 },
-  ],
+  bos_hex: [{ type: 'bos', color: '#2d5a2d', shade: '#1a3a1a', emoji: '🌲', produces: true }],
+  akkers_hex: [{ type: 'akkers', color: '#e0b93a', shade: '#9c7d1a', emoji: '🌾', produces: true }],
+  weiden_hex: [{ type: 'weiden', color: '#7bb33a', shade: '#4c7822', emoji: '🐑', produces: true }],
+  heuvels_hex: [{ type: 'heuvels', color: '#c2622c', shade: '#7a3d18', emoji: '🧱', produces: true }],
+  bergen_hex: [{ type: 'bergen', color: '#6b6b6b', shade: '#3d3d3d', emoji: '⛰️', produces: true }],
+  woestijn_hex: [{ type: 'woestijn', color: '#caa86a', shade: '#8a6f3a', emoji: '🏜️', produces: false }],
   jungle_hex: [{ type: 'jungle', color: '#1e4a1e', shade: '#0c2d0c', emoji: '🌴', produces: true }],
   koraal_hex: [{ type: 'koraal', color: '#2a7099', shade: '#174a6a', emoji: '🐟', produces: true, water: true }],
   vulkaan_hex: [{ type: 'vulkaan', color: '#4a1212', shade: '#2a0505', emoji: '🌋', produces: false, isVolcano: true }],
