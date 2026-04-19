@@ -1,0 +1,23 @@
+// Random events - only relevant ones appear based on active modules
+export const EVENTS = [
+  { id: 'e_handelsvloot', title: 'Handelsvloot arriveert', desc: 'Iedereen krijgt +1 grondstof naar keuze.', requires: null },
+  { id: 'e_storm', title: 'Storm op zee', desc: 'Alle schepen 1 hex terug.', requires: 'handelsschip' },
+  { id: 'e_goudkoorts', title: 'Goudkoorts', desc: 'Goudproductie ×2 deze ronde.', requires: 'goud' },
+  { id: 'e_honger', title: 'Hongersnood dreigt', desc: 'Volgende voedselronde kost +1 extra.', requires: 'voedsel' },
+  { id: 'e_ontdekkersgeest', title: 'Ontdekkersgeest', desc: 'Volgende ontdekking: trek 1 extra tegel.', requires: 'procedureel' },
+  { id: 'e_piratenraid', title: 'Piratenraid', desc: 'Piraat verplaatst naar willekeurige watertegel.', requires: 'piraat' },
+  { id: 'e_oogst', title: 'Zegenrijke oogst', desc: 'Graan produceert dubbel deze ronde.', requires: null },
+  { id: 'e_vulkaan', title: 'Vulkanische activiteit', desc: 'Vulkaan rommelt, volgende 7 = gegarandeerde uitbarsting.', requires: 'vulkaan' },
+  { id: 'e_diplomatie', title: 'Diplomatieke spanning', desc: 'Geen handelscontracten deze ronde.', requires: 'contracten' },
+  { id: 'e_goden', title: 'Goden zijn gunstig', desc: 'Iedereen +2 gunst.', requires: 'gunst' },
+  { id: 'e_mist', title: 'Mist trekt op', desc: 'Onthul 1 tegel uit de trekstapel gratis.', requires: 'procedureel' },
+  { id: 'e_epidemie', title: 'Epidemie', desc: 'Willekeurig gebouw krijgt ziektetoken.', requires: 'ziekte' },
+  { id: 'e_vloed', title: 'Vloed waarschuwing', desc: 'Volgende getijdenworp +2.', requires: 'getijden' },
+  { id: 'e_huurlingen', title: 'Huurlingenmarkt', desc: 'Huurlingen kosten 0 deze ronde.', requires: 'huurlingen' },
+  { id: 'e_smokkelaars', title: 'Smokkelaars', desc: 'Alle spelers mogen 1× gratis 3:1 bankruilen.', requires: null },
+  { id: 'e_monstermig', title: 'Monstermigratie', desc: 'Alle monsters verplaatsen 1 tegel.', requires: 'monsters' },
+  { id: 'e_interventie', title: 'Goddelijke interventie', desc: 'Kies 1 getijdenmarker om te verplaatsen.', requires: 'getijdenmarkers' },
+  { id: 'e_vangst', title: 'Rijke vangst', desc: 'Alle vissersbootjes produceren +1 vis.', requires: 'vissersboot' },
+  { id: 'e_aardbeving', title: 'Aardbeving', desc: '1 willekeurige palissade/dijk wordt vernietigd.', requires: 'palissade' },
+  { id: 'e_verkenners', title: 'Verkennersmoed', desc: 'Oorlogsschepen trekken 3 tegels i.p.v. 2 deze ronde.', requires: 'oorlogsschip' },
+];
