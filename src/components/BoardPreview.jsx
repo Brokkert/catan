@@ -124,24 +124,28 @@ export default function BoardPreview({ activeItems, printed }) {
       water: countOf(printed, 'basis_water'),
     };
 
-    // If user has basisplaten printed, tiles must fit in them (cap + pad).
-    // If no plates yet, show tiles loose.
-    let overflowLand = 0, overflowWater = 0;
-    if (plates.land > 0) {
-      overflowLand = Math.max(0, landPool.length - plates.land);
-      if (overflowLand > 0) landPool.splice(plates.land);
-      const emptyLand = plates.land - landPool.length;
-      for (let i = 0; i < emptyLand; i++) {
-        landPool.push({ type: 'empty-land', color: 'transparent', shade: 'transparent', emoji: '', empty: true });
-      }
+    // If user has basisplaten printed, first N tiles get a plate; overflow
+    // renders loose (no rim) so it's visible that a plate is missing.
+    // If no plates yet, tiles are shown loose.
+    const markPlate = (arr, plateCount) => {
+      arr.forEach((t, i) => { t.hasPlate = plateCount === 0 ? null : i < plateCount; });
+    };
+    markPlate(landPool, plates.land);
+    markPlate(waterPool, plates.water);
+
+    let overflowLand = Math.max(0, landPool.length - plates.land);
+    let overflowWater = Math.max(0, waterPool.length - plates.water);
+    if (plates.land === 0) overflowLand = 0;
+    if (plates.water === 0) overflowWater = 0;
+
+    // Pad with empty plates if more plates than tiles
+    const emptyLand = Math.max(0, plates.land - landPool.length);
+    const emptyWater = Math.max(0, plates.water - waterPool.length);
+    for (let i = 0; i < emptyLand; i++) {
+      landPool.push({ type: 'empty-land', color: 'transparent', shade: 'transparent', emoji: '', empty: true, hasPlate: true });
     }
-    if (plates.water > 0) {
-      overflowWater = Math.max(0, waterPool.length - plates.water);
-      if (overflowWater > 0) waterPool.splice(plates.water);
-      const emptyWater = plates.water - waterPool.length;
-      for (let i = 0; i < emptyWater; i++) {
-        waterPool.push({ type: 'empty-water', color: 'transparent', shade: 'transparent', emoji: '', empty: true, water: true });
-      }
+    for (let i = 0; i < emptyWater; i++) {
+      waterPool.push({ type: 'empty-water', color: 'transparent', shade: 'transparent', emoji: '', empty: true, water: true, hasPlate: true });
     }
     plates.overflowLand = overflowLand;
     plates.overflowWater = overflowWater;
@@ -389,6 +393,17 @@ export default function BoardPreview({ activeItems, printed }) {
               return (
                 <g key={i}>
                   <polygon points={points} fill="transparent" stroke={strokeColor} strokeWidth="2" strokeDasharray="3 2" />
+                </g>
+              );
+            }
+            if (h.hasPlate === false) {
+              // Overflow tile — no plate, render without rim with dashed warning border
+              return (
+                <g key={i}>
+                  <polygon points={innerPoints} fill={`url(#g${i})`} opacity="0.7" />
+                  <polygon points={points} fill="transparent" stroke="#e8892b" strokeWidth="1.5" strokeDasharray="2 2" />
+                  {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="14" opacity="0.8">{h.emoji}</text>}
+                  <text x={x} y={y + size - 4} textAnchor="middle" fontSize="5" fill="#e8892b" fontWeight="700">geen plaat</text>
                 </g>
               );
             }
