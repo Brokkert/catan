@@ -384,15 +384,24 @@ export default function BoardPreview({ activeItems, printed }) {
               const a = (Math.PI / 3) * k + Math.PI / 6;
               return `${x + size * Math.cos(a)},${y + size * Math.sin(a)}`;
             }).join(' ');
+            const rimWidth = 6;
             const innerPoints = Array.from({ length: 6 }, (_, k) => {
               const a = (Math.PI / 3) * k + Math.PI / 6;
-              return `${x + (size - 3) * Math.cos(a)},${y + (size - 3) * Math.sin(a)}`;
+              return `${x + (size - rimWidth) * Math.cos(a)},${y + (size - rimWidth) * Math.sin(a)}`;
+            }).join(' ');
+            const rimHighlight = Array.from({ length: 6 }, (_, k) => {
+              const a = (Math.PI / 3) * k + Math.PI / 6;
+              return `${x + (size - 1.5) * Math.cos(a)},${y + (size - 1.5) * Math.sin(a)}`;
             }).join(' ');
             if (h.empty) {
-              const strokeColor = h.water ? '#2a4a6a' : '#6a5530';
+              const plateColor = h.water ? '#0c1a2a' : '#1a130a';
+              const plateHi = h.water ? '#2a4a6a' : '#6a5530';
               return (
-                <g key={i}>
-                  <polygon points={points} fill="transparent" stroke={strokeColor} strokeWidth="2" strokeDasharray="3 2" />
+                <g key={i} filter="url(#hexshadow)">
+                  {/* empty plate body - no tile inserted */}
+                  <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1" />
+                  <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="0.8" />
+                  <polygon points={innerPoints} fill="#000" opacity="0.6" />
                 </g>
               );
             }
@@ -407,13 +416,19 @@ export default function BoardPreview({ activeItems, printed }) {
                 </g>
               );
             }
+            const plateColor = h.water ? '#0c1a2a' : '#1a130a';
+            const plateHi = h.water ? '#2a4a6a' : '#4a3a1a';
             return (
               <g key={i} filter="url(#hexshadow)">
-                {/* outer rim (base plate) */}
-                <polygon points={points} fill="#0a0a0a" stroke="#1a1a1a" strokeWidth="0.5" />
-                {/* inset tile */}
-                <polygon points={innerPoints} fill={`url(#g${i})`} stroke={h.shade} strokeWidth="0.5" />
-                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="16" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.6))' }}>{h.emoji}</text>}
+                {/* outer rim (base plate body) */}
+                <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1" />
+                {/* rim top highlight */}
+                <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="0.8" />
+                {/* inset socket shadow */}
+                <polygon points={innerPoints} fill="#000" opacity="0.5" />
+                {/* actual tile surface */}
+                <polygon points={innerPoints} fill={`url(#g${i})`} stroke={h.shade} strokeWidth="0.7" transform={`translate(0 ${-0.5})`} />
+                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="16" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.8))' }}>{h.emoji}</text>}
               </g>
             );
           })}
