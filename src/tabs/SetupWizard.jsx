@@ -117,7 +117,7 @@ function buildSteps(cfg, qty) {
     title: 'Leg de waterring',
     render: () => (
       <>
-        <p>Leg <b>12 watertegels</b> rond het hoofdeiland. Je hebt er nog meer nodig als je <code>procedurele ontdekking</code> gebruikt.</p>
+        <p>Leg <b>12 watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' Houd extra watertegels bij de hand voor ontdekkingen.'}</p>
         <HexBoard tiles={mainPlusWater(cfg)} size={26} />
         <Chips items={[
           `Benodigd: 12 watertegels`,
@@ -192,7 +192,7 @@ function buildSteps(cfg, qty) {
     title: 'Nummertokens',
     render: () => (
       <>
-        <p>Leg nummertokens op de {cfg.vulkaan ? 'productieve' : 'niet-woestijn'}-hexen. Houd <b>15 reserve</b> apart voor nieuw-ontdekte tegels.</p>
+        <p>Leg nummertokens op de {cfg.vulkaan ? 'productieve' : 'niet-woestijn'}-hexen.{cfg.procedureel && ' Houd 15 nummertokens reserve apart voor tegels die je tijdens het spel ontdekt.'}</p>
         <p className="small muted">Voorbeeld: 6 en 8 krijgen <span style={{ color: 'var(--red)' }}>rode</span> tekst (meest kans).</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
