@@ -24,7 +24,7 @@ export default function Configurator({ config, configActions, customRules, custo
     configActions.set(id, !config[id]);
   }
 
-  function applyPreset(preset) {
+  function expectedConfigFor(preset) {
     const next = {};
     if (preset.rules === '*') {
       ALL_RULES.forEach(r => { next[r.id] = true; });
@@ -33,7 +33,22 @@ export default function Configurator({ config, configActions, customRules, custo
       ALL_RULES.forEach(r => { next[r.id] = r.core || preset.rules.includes(r.id); });
       customRules.forEach(r => { next[r.id] = false; });
     }
-    configActions.replace(next);
+    return next;
+  }
+
+  function presetMatches(preset) {
+    const expected = expectedConfigFor(preset);
+    for (const [id, val] of Object.entries(expected)) {
+      if (!!config[id] !== !!val) return false;
+    }
+    for (const id of Object.keys(config)) {
+      if (!(id in expected) && !!config[id]) return false;
+    }
+    return true;
+  }
+
+  function applyPreset(preset) {
+    configActions.replace(expectedConfigFor(preset));
   }
 
   function categoryAllOn(catId, on) {
@@ -73,7 +88,11 @@ export default function Configurator({ config, configActions, customRules, custo
         </div>
         <div className="preset-grid">
           {PRESETS.map(p => (
-            <button key={p.id} className="preset-btn" onClick={() => applyPreset(p)}>
+            <button
+              key={p.id}
+              className={`preset-btn ${presetMatches(p) ? 'active' : ''}`}
+              onClick={() => applyPreset(p)}
+            >
               {p.name}
               <span className="preset-label">{p.time}</span>
             </button>
