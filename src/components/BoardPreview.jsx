@@ -387,24 +387,29 @@ export default function BoardPreview({ activeItems, printed }) {
               const a = (Math.PI / 3) * k + Math.PI / 6;
               return `${x + size * Math.cos(a)},${y + size * Math.sin(a)}`;
             }).join(' ');
-            const rimWidth = 6;
+            const rimWidth = 10;
             const innerPoints = Array.from({ length: 6 }, (_, k) => {
               const a = (Math.PI / 3) * k + Math.PI / 6;
               return `${x + (size - rimWidth) * Math.cos(a)},${y + (size - rimWidth) * Math.sin(a)}`;
             }).join(' ');
             const rimHighlight = Array.from({ length: 6 }, (_, k) => {
               const a = (Math.PI / 3) * k + Math.PI / 6;
-              return `${x + (size - 1.5) * Math.cos(a)},${y + (size - 1.5) * Math.sin(a)}`;
+              return `${x + (size - 2) * Math.cos(a)},${y + (size - 2) * Math.sin(a)}`;
+            }).join(' ');
+            const rimMidline = Array.from({ length: 6 }, (_, k) => {
+              const a = (Math.PI / 3) * k + Math.PI / 6;
+              return `${x + (size - 5) * Math.cos(a)},${y + (size - 5) * Math.sin(a)}`;
             }).join(' ');
             if (h.empty) {
               const plateColor = h.water ? '#0c1a2a' : '#1a130a';
-              const plateHi = h.water ? '#2a4a6a' : '#6a5530';
+              const plateHi = h.water ? '#3a6a8a' : '#6a5530';
+              const plateMid = h.water ? '#1a3048' : '#2a2010';
               return (
                 <g key={i} filter="url(#hexshadow)">
-                  {/* empty plate body - no tile inserted */}
-                  <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1" />
-                  <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="0.8" />
-                  <polygon points={innerPoints} fill="#000" opacity="0.6" />
+                  <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1.5" />
+                  <polygon points={rimMidline} fill="none" stroke={plateMid} strokeWidth="2.5" />
+                  <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="1.2" />
+                  <polygon points={innerPoints} fill="#000" opacity="0.7" />
                 </g>
               );
             }
@@ -420,18 +425,21 @@ export default function BoardPreview({ activeItems, printed }) {
               );
             }
             const plateColor = h.water ? '#0c1a2a' : '#1a130a';
-            const plateHi = h.water ? '#2a4a6a' : '#4a3a1a';
+            const plateHi = h.water ? '#3a6a8a' : '#5a4522';
+            const plateMid = h.water ? '#1a3048' : '#2a2010';
             return (
               <g key={i} filter="url(#hexshadow)">
-                {/* outer rim (base plate body) */}
-                <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1" />
-                {/* rim top highlight */}
-                <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="0.8" />
+                {/* outer rim bottom edge (dark) */}
+                <polygon points={points} fill={plateColor} stroke="#000" strokeWidth="1.5" />
+                {/* rim body (mid tone) */}
+                <polygon points={rimMidline} fill="none" stroke={plateMid} strokeWidth="2.5" />
+                {/* rim top highlight (lit edge) */}
+                <polygon points={rimHighlight} fill="none" stroke={plateHi} strokeWidth="1.2" />
                 {/* inset socket shadow */}
-                <polygon points={innerPoints} fill="#000" opacity="0.5" />
+                <polygon points={innerPoints} fill="#000" opacity="0.65" />
                 {/* actual tile surface */}
-                <polygon points={innerPoints} fill={`url(#g${i})`} stroke={h.shade} strokeWidth="0.7" transform={`translate(0 ${-0.5})`} />
-                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="16" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.8))' }}>{h.emoji}</text>}
+                <polygon points={innerPoints} fill={`url(#g${i})`} stroke={h.shade} strokeWidth="0.7" />
+                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="14" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.8))' }}>{h.emoji}</text>}
               </g>
             );
           })}
