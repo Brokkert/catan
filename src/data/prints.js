@@ -19,6 +19,7 @@ export const PRINT_ITEMS = [
   { id: 'havens', name: 'Haventegels', qty: 5, size: 'overlay', color: 'mixed', desc: '5 haventegels', stl: STL_BASIS, always: true },
   { id: 'basis_land', name: 'Basisplaat — land', qty: 30, size: 'hex', color: 'neutral', desc: 'Magnetische basisplaat voor land-hexen (bruin/grijs filament)', stl: STL_BASIS, always: true },
   { id: 'basis_water', name: 'Basisplaat — water', qty: 50, size: 'hex', color: 'blue', desc: 'Magnetische basisplaat voor water-hexen (blauw filament)', stl: STL_BASIS, always: true },
+  { id: 'ontdekking_bak', name: 'Ontdekking-bak (opberg + trek)', qty: 1, size: 'large', color: 'neutral', desc: 'Dubbelfunctie: tegels opbergen én pre-geshuffled trekken. Plaats ontdekkingstegels vooraf willekeurig in de vakken — trek tijdens spel uit het volgende vak.', custom: true, rule: 'procedureel' },
 
   // procedureel
   { id: 'jungle_hex', name: 'Jungle-hex', qty: 3, size: 'hex', color: 'mixed', desc: 'Jungletegel voor specerij', custom: true, rule: 'procedureel' },
@@ -109,7 +110,7 @@ export const PRINT_ITEMS = [
   { id: 'palissade_fig', name: 'Palissades', qty: 3, size: 'small', color: 'player', desc: 'Hekwerk hexrand', custom: true, rule: 'palissade', perPlayer: true },
   { id: 'dijk_fig', name: 'Dijken', qty: 4, size: 'small', color: 'player', desc: 'Muurtje hexrand', custom: true, rule: 'dijk', perPlayer: true },
   { id: 'gildehall_fig', name: 'Gildehall', qty: 1, size: 'medium', color: 'player', desc: 'Remix metropolis', custom: true, rule: 'gildehall', perPlayer: true },
-  { id: 'gildekaarten', name: 'Gildekaartjes', qty: 6, size: 'small', color: 'mixed', desc: '6 specialisaties', custom: true, rule: 'gildehall' },
+  { id: 'gildekaarten', name: 'Gilde-insignias', qty: 6, size: 'small', color: 'mixed', desc: '6 3D insignias/medallions (~15mm) per specialisatie. Pak die op bij gildehall-bouw.', custom: true, rule: 'gildehall' },
   { id: 'smederij_fig', name: 'Smederij', qty: 1, size: 'medium', color: 'player', desc: '~15mm met aambeeld', custom: true, rule: 'smederij', perPlayer: true },
   { id: 'tempel_fig', name: 'Tempel', qty: 1, size: 'medium', color: 'player', desc: '~15mm met zuilen', custom: true, rule: 'tempel', perPlayer: true },
   { id: 'markt_fig', name: 'Markt', qty: 1, size: 'medium', color: 'player', desc: '~15mm kraampje', custom: true, rule: 'markt', perPlayer: true },
@@ -122,7 +123,7 @@ export const PRINT_ITEMS = [
   { id: 'orakelschijven', name: 'Orakelschijven (2-12)', qty: 11, size: 'small', color: 'player', desc: '~15mm dubbelzijdig', custom: true, rule: 'orakel', perPlayer: true },
   { id: 'spion_fig', name: 'Spionnen', qty: 2, size: 'small', color: 'player', desc: '~8mm gehurkt', custom: true, rule: 'spionnen', perPlayer: true },
   { id: 'scroll_tokens', name: 'Scroll-tokens', qty: 8, size: 'small', color: 'mixed', desc: '~12mm perkament', custom: true, rule: 'contracten' },
-  { id: 'nummerkaarten', name: 'Nummerkaartstapel', qty: 36, size: 'small', color: 'mixed', desc: 'Print op karton', custom: true, rule: 'kaartstapel' },
+  { id: 'nummerkaarten', name: 'Nummer-trekschijven', qty: 36, size: 'small', color: 'mixed', desc: '36 genummerde schijfjes (2d6 combinaties). Pre-geshuffled in een trek-bak leggen; pak het volgende schijfje in plaats van dobbelen.', custom: true, rule: 'kaartstapel' },
 
   // verzamelen
   { id: 'trof_klauw', name: 'Monsterklauw-trofeeën', qty: 8, size: 'small', color: 'neutral', desc: '~12mm', custom: true, rule: 'trofeeen' },
@@ -147,7 +148,7 @@ export const PRINT_ITEMS = [
 
   // mythologie
   { id: 'godenbeeldjes', name: 'Godenbeeldjes (4)', qty: 4, size: 'large', color: 'mixed', desc: 'Poseidon/Athena/Ares/Demeter ~25mm', custom: true, rule: 'beschermgoden' },
-  { id: 'godenkaarten', name: 'Godenkaarten', qty: 4, size: 'small', color: 'mixed', desc: 'Print op karton', custom: true, rule: 'beschermgoden' },
+  { id: 'godenkaarten', name: 'Goden-plaquettes', qty: 4, size: 'small', color: 'mixed', desc: '4 3D plaquettes met godnaam + icoon. Krijg bij godkeuze jouw plaquette.', custom: true, rule: 'beschermgoden' },
   { id: 'held_fig', name: 'Held figuur', qty: 1, size: 'medium', color: 'gold', desc: '~20mm, goud accent', custom: true, rule: 'helden', perPlayer: true },
   { id: 'mythische_units', name: 'Mythische eenheden', qty: 8, size: 'medium', color: 'player', desc: '3 types × 2-3 stuks', stl: 'https://www.thingiverse.com/search?q=D%26D+miniatures', rule: 'mythische_eenheden', perPlayer: true },
   { id: 'titan_fig', name: 'Titan', qty: 1, size: 'large', color: 'player', desc: '~30mm', custom: true, rule: 'mythische_eenheden', perPlayer: true },
@@ -161,9 +162,9 @@ export const PRINT_ITEMS = [
   { id: 'marktbord_fig', name: 'Marktbord', qty: 1, size: 'medium', color: 'mixed', desc: 'Plateau met 3 vakjes', custom: true, rule: 'marktbord' },
 
   // kaarten
-  { id: 'vis_kaarten', name: 'Vis-kaarten', qty: 19, size: 'small', color: 'mixed', desc: 'Print op karton', custom: true, rule: 'vis' },
-  { id: 'specerij_kaarten', name: 'Specerij-kaarten', qty: 14, size: 'small', color: 'mixed', desc: 'Print op karton', custom: true, rule: 'specerij' },
-  { id: 'extra_ontwik_kaarten', name: 'Extra ontwikkelingskaarten', qty: 7, size: 'small', color: 'mixed', desc: 'Print op karton', custom: true, rule: 'ride_by_night' },
+  { id: 'vis_kaarten', name: 'Vis-tokens', qty: 19, size: 'small', color: 'mixed', desc: '3D visjes (~15mm). Vervangen de grondstofkaart.', custom: true, rule: 'vis' },
+  { id: 'specerij_kaarten', name: 'Specerij-potjes', qty: 14, size: 'small', color: 'mixed', desc: '3D kruidenpotjes (~12mm). Vervangen de grondstofkaart.', custom: true, rule: 'specerij' },
+  { id: 'ontwik_tokens', name: 'Ontwikkelings-scrolls', qty: 32, size: 'small', color: 'mixed', desc: '3D opgerolde scrolls met symbool per type (ridder, uitvinding, monopolie, wegen, VP). 25 basis + 7 extra kaarten-vervanging.', custom: true, always: true },
 ];
 
 export const SIZE_WEIGHT = { hex: 15, overlay: 8, large: 8, medium: 3, small: 1 };

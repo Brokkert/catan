@@ -148,7 +148,8 @@ function buildSteps(cfg, qty) {
             {cfg.goudmijn && <li>Goudmijn: <b>{qty('goudmijn_hex', 1)}</b></li>}
             {cfg.goudrivier && <li>Goudrivier: <b>{qty('goudrivier_hex', 1)}</b></li>}
           </ul>
-          <p className="small muted">Schud goed door elkaar. Gebruik bv een non-transparante stofzak of een emmer waar je niet in kunt kijken.</p>
+          <p className="small muted"><b>Tip</b>: print een <code>Ontdekking-bak</code> met vakken. Plaats de geshufflede tegels vooraf in volgorde in de vakken — tijdens spel trek je simpel uit het eerstvolgende vak. Geen zak nodig.</p>
+          <p className="small muted">Alternatief: ondoorzichtige stofzak of emmer met deksel.</p>
         </>
       ),
     });
@@ -232,13 +233,14 @@ function buildSteps(cfg, qty) {
   }
 
   steps.push({
-    title: 'Schud kaartstapels',
+    title: 'Tokens & trek-bakken klaarzetten',
     render: () => (
       <ul>
-        {cfg.kaartstapel && <li>Schud de <b>{qty('nummerkaarten', 36)} nummerkaarten</b> (vervangt dobbelstenen)</li>}
-        <li>Schud de ontwikkelingskaartenstapel ({25 + qty('extra_ontwik_kaarten', 0)} kaarten)</li>
-        {cfg.vis && <li>Leg de <b>{qty('vis_kaarten', 19)} vis-kaarten</b> bij de bank</li>}
-        {cfg.specerij && <li>Leg de <b>{qty('specerij_kaarten', 14)} specerij-kaarten</b> bij de bank</li>}
+        {cfg.kaartstapel && <li>Leg de <b>{qty('nummerkaarten', 36)} nummer-trekschijven</b> vooraf geshuffled in een kleine trek-bak (vervangt dobbelsteen)</li>}
+        <li>Leg de <b>{qty('ontwik_tokens', 32)} ontwikkelings-scrolls</b> in een trek-bakje of ondoorzichtige pot</li>
+        {cfg.vis && <li>Leg de <b>{qty('vis_kaarten', 19)} vis-tokens</b> bij de bank</li>}
+        {cfg.specerij && <li>Leg de <b>{qty('specerij_kaarten', 14)} specerij-potjes</b> bij de bank</li>}
+        {cfg.gildehall && <li>Leg de <b>{qty('gildekaarten', 6)} gilde-insignias</b> open zichtbaar bij de gildehall-voorraad</li>}
       </ul>
     ),
   });
