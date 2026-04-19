@@ -84,13 +84,11 @@ export default function BoardPreview({ activeItems, printed }) {
       if (have <= 0) return;
       const mapping = HEX_TYPES[it.id];
       if (!mapping) {
-        // Unknown hex item (user-added custom) → treat as land
         for (let i = 0; i < have; i++) {
           landPool.push({ type: 'custom', color: '#555', emoji: '❓', label: it.name });
         }
         return;
       }
-      // Distribute count proportionally across mapped types
       const totalMappingCount = mapping.reduce((s, m) => s + (m.count || 1), 0);
       mapping.forEach(m => {
         const share = Math.round(have * (m.count || 1) / totalMappingCount);
@@ -109,6 +107,16 @@ export default function BoardPreview({ activeItems, printed }) {
       land: countOf(printed, 'basis_land'),
       water: countOf(printed, 'basis_water'),
     };
+
+    // Pad pools with empty plates if user has more plates than tiles
+    const emptyLand = Math.max(0, plates.land - landPool.length);
+    const emptyWater = Math.max(0, plates.water - waterPool.length);
+    for (let i = 0; i < emptyLand; i++) {
+      landPool.push({ type: 'empty-land', color: 'transparent', emoji: '', label: 'Lege land-basisplaat', empty: true, stroke: '#5a4a2a' });
+    }
+    for (let i = 0; i < emptyWater; i++) {
+      waterPool.push({ type: 'empty-water', color: 'transparent', emoji: '', label: 'Lege water-basisplaat', empty: true, stroke: '#2a4a6a' });
+    }
     return { landPool, waterPool, plates };
   }, [activeItems, printed, seed]);
 
@@ -165,23 +173,30 @@ export default function BoardPreview({ activeItems, printed }) {
   if (totalTiles === 0) {
     return (
       <div>
-        <p className="muted">Geen hex-tegels geprint. Zet bij de printlijst het aantal hoger voor minimaal de land- of watertegels om hier een bord te zien.</p>
+        <p className="muted">Geen tegels of basisplaten geprint. Zet bij 🗺️ Tegels het aantal van land/water-tegels of -basisplaten hoger om hier iets te zien.</p>
       </div>
     );
   }
 
+  const realLand = landPool.filter(h => !h.empty).length;
+  const realWater = waterPool.filter(h => !h.empty).length;
+  const emptyLand = landPool.length - realLand;
+  const emptyWater = waterPool.length - realWater;
+
   const plateWarning = [];
-  if (plates.land < landPool.length) plateWarning.push(`${landPool.length - plates.land} land-basisplaten tekort`);
-  if (plates.water < waterPool.length) plateWarning.push(`${waterPool.length - plates.water} water-basisplaten tekort`);
+  if (plates.land < realLand) plateWarning.push(`${realLand - plates.land} land-basisplaten tekort`);
+  if (plates.water < realWater) plateWarning.push(`${realWater - plates.water} water-basisplaten tekort`);
 
   return (
     <div>
       <div className="row between mb">
         <div className="small muted">
-          {landPool.length} land · {waterPool.length} water · {totalTiles} totaal
+          Land: {realLand}{emptyLand > 0 ? ` (+${emptyLand} leeg)` : ''}
+          {' · '}
+          Water: {realWater}{emptyWater > 0 ? ` (+${emptyWater} leeg)` : ''}
         </div>
         <button className="btn-secondary" onClick={() => setSeed(s => s + 1)}
-          style={{ padding: '6px 12px', fontSize: 12 }}>🎲 Shuffle</button>
+          style={{ padding: '6px 12px', fontSize: 12 }}>🎲</button>
       </div>
 
       <div style={{ background: '#0a1420', borderRadius: 8, padding: 8, overflow: 'auto' }}>
@@ -192,10 +207,19 @@ export default function BoardPreview({ activeItems, printed }) {
               const a = (Math.PI / 3) * k + Math.PI / 6;
               return `${x + size * Math.cos(a)},${y + size * Math.sin(a)}`;
             }).join(' ');
+            const strokeColor = h.stroke || '#0d1117';
+            const strokeWidth = h.empty ? 1.5 : 1.5;
+            const dash = h.empty ? '3 2' : undefined;
             return (
               <g key={i}>
-                <polygon points={points} fill={h.color} stroke="#0d1117" strokeWidth="1.5" />
-                <text x={x} y={y + 5} textAnchor="middle" fontSize="14" fill="#fff">{h.emoji}</text>
+                <polygon
+                  points={points}
+                  fill={h.color}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={dash}
+                />
+                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="14" fill="#fff">{h.emoji}</text>}
               </g>
             );
           })}
