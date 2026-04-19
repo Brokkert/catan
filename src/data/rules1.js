@@ -1,7 +1,7 @@
 // Rules part 1: bord, grondstoffen, schepen, dreiging, survival
 export const RULES_1 = [
   // BORD
-  { id: 'procedureel', cat: 'bord', name: 'Procedurele ontdekking', desc: 'Begin met alleen hoofdeiland + waterring. Trek tegels uit stapel als je vaart. Elke game is anders.', def: true, core: true },
+  { id: 'procedureel', cat: 'bord', name: 'Procedurele ontdekking', desc: 'Begin met alleen hoofdeiland + waterring. Alle ontdekkingstegels zitten in een ondoorzichtige zak; trek er blind eentje als je een nieuwe tegel onthult. Elke game is anders.', def: true, core: true },
   { id: 'vulkaan', cat: 'bord', name: 'Vulkaan', desc: 'Vervangt woestijn. Geen productie, rover start erop. Bij twee 7\'s achter elkaar: uitbarsting vernietigt aangrenzende gebouwen + lavategel.', def: true },
   { id: 'ruine', cat: 'bord', name: 'Ruïne-tegels (2×)', desc: 'In trekstapel. Geeft reliek of items bij ontdekking. Geen productie.', def: true },
   { id: 'maalstroom', cat: 'bord', name: 'Maalstroom-tegel', desc: 'Permanent gevaarlijk water. Schip dat erop vaart: reddingsworp 1-2 = vernietigd, 3-6 = veilig.', def: true },

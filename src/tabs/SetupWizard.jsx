@@ -130,10 +130,10 @@ function buildSteps(cfg, qty) {
 
   if (cfg.procedureel) {
     steps.push({
-      title: 'Bereid de trekstapel voor',
+      title: 'Vul de ontdekkingszak',
       render: () => (
         <>
-          <p>Maak de ontdekkings-trekstapel. Tel de actieve tegels bij elkaar, schud en leg mist-kant omhoog:</p>
+          <p>Stop alle ontdekkingstegels in een <b>ondoorzichtige zak</b> (3D-tegels kun je niet omdraaien). Bij elke ontdekking trek je blind een tegel uit de zak. Tel bij elkaar wat erin moet:</p>
           <ul>
             <li>Open zee: <b>12</b></li>
             {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
@@ -148,7 +148,7 @@ function buildSteps(cfg, qty) {
             {cfg.goudmijn && <li>Goudmijn: <b>{qty('goudmijn_hex', 1)}</b></li>}
             {cfg.goudrivier && <li>Goudrivier: <b>{qty('goudrivier_hex', 1)}</b></li>}
           </ul>
-          <p className="small muted">Leg op een stapel met mist-kant boven zodat niemand de volgorde weet.</p>
+          <p className="small muted">Schud goed door elkaar. Gebruik bv een non-transparante stofzak of een emmer waar je niet in kunt kijken.</p>
         </>
       ),
     });
