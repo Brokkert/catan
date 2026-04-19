@@ -29,7 +29,6 @@ const HEX_TYPES = {
   goudmijn_hex: [{ type: 'goudmijn', color: '#8a6a1a', shade: '#5a4010', emoji: '💰', produces: true }],
   goudrivier_hex: [{ type: 'goudrivier', color: '#d4a02a', shade: '#9c7010', emoji: '✨', produces: true }],
   water_hex: [{ type: 'water', color: '#2a5a8a', shade: '#174068', emoji: '', produces: false, water: true }],
-  open_zee: [{ type: 'water', color: '#2a5a8a', shade: '#174068', emoji: '', produces: false, water: true }],
 };
 
 const NUMBER_POOL = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12];
