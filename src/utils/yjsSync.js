@@ -25,6 +25,7 @@ export const yBank = doc.getArray('bank');           // 4 player resource entrie
 export const yMeta = doc.getMap('meta');             // misc: selected preset etc
 export const yPrintOverrides = doc.getMap('printOverrides'); // { itemId: { name?, qty?, hidden? } }
 export const yCustomPrints = doc.getArray('customPrints');   // user-added print items
+export const yParams = doc.getMap('params');                 // tweakable game-rule numbers
 
 export function waitForSync(timeoutMs = 1500) {
   return new Promise(resolve => {

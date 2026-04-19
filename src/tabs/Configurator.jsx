@@ -3,13 +3,14 @@ import { ALL_RULES, RULES_BY_CAT, PRESETS, DEFAULT_CONFIG } from '../data/rules.
 import { CATEGORIES } from '../data/categories.js';
 import { shareURL } from '../utils/game.js';
 import { qrCodeURL } from '../utils/storage.js';
-import { useYMeta } from '../utils/useYjs.js';
+import { useYMeta, useYParams, PARAM_LABELS, DEFAULT_PARAMS } from '../utils/useYjs.js';
 import Switch from '../components/Switch.jsx';
 import Modal from '../components/Modal.jsx';
 
 export default function Configurator({ config, configActions, customRules, customActions }) {
   const meta = useYMeta();
   const selectedPreset = meta.preset;
+  const [params, paramActions] = useYParams();
   const [showQR, setShowQR] = useState(false);
   const [addingTo, setAddingTo] = useState(null);
   const [customName, setCustomName] = useState('');
@@ -95,6 +96,22 @@ export default function Configurator({ config, configActions, customRules, custo
           <button className="btn-secondary" onClick={() => configActions.replace({ ...DEFAULT_CONFIG })}>Reset naar default</button>
         </div>
       </div>
+
+      <details className="card" style={{ padding: '10px 14px' }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--gold)' }}>
+          ⚙️ Startaantallen (geavanceerd) — pas Catan-geometrie aan
+        </summary>
+        <p className="small muted mt">Normaal Catan-regels. Wijzig alleen als je een grotere of kleinere opstelling wilt.</p>
+        {Object.entries(DEFAULT_PARAMS).map(([key, def]) => (
+          <div key={key} className="row" style={{ gap: 10, alignItems: 'center', padding: '6px 0' }}>
+            <span className="grow small">{PARAM_LABELS[key]}</span>
+            <button className="plusminus" onClick={() => paramActions.setParam(key, (params[key] ?? def) - 1)}>−</button>
+            <span className="counter-pill" style={{ minWidth: 40, textAlign: 'center' }}>{params[key] ?? def}</span>
+            <button className="plusminus" onClick={() => paramActions.setParam(key, (params[key] ?? def) + 1)}>+</button>
+          </div>
+        ))}
+        <button className="btn-secondary mt" onClick={paramActions.resetParams} style={{ fontSize: 12 }}>↺ Reset naar Catan-standaard</button>
+      </details>
 
       {CATEGORIES.map(cat => {
         const catRules = RULES_BY_CAT[cat.id] || [];

@@ -1,5 +1,27 @@
 import { useEffect, useState, useCallback } from 'react';
-import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints } from './yjsSync.js';
+import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints, yParams } from './yjsSync.js';
+
+export const DEFAULT_PARAMS = {
+  hoofdeiland_tegels: 7,
+  waterring_tegels: 12,
+  havens: 5,
+  getijdenmarkers: 3,
+  startdorpen_per_speler: 2,
+  startwegen_per_speler: 2,
+  startvis: 1,
+  startgoud: 2,
+};
+
+export const PARAM_LABELS = {
+  hoofdeiland_tegels: 'Hoofdeiland tegels',
+  waterring_tegels: 'Waterring tegels',
+  havens: 'Havens',
+  getijdenmarkers: 'Getijdenmarkers',
+  startdorpen_per_speler: 'Startdorpen per speler',
+  startwegen_per_speler: 'Startwegen per speler',
+  startvis: 'Startbonus vis (bij vis-regel)',
+  startgoud: 'Startbonus goud (bij goud-regel)',
+};
 
 function useObserved(target, getValue) {
   const [value, setValue] = useState(getValue);
@@ -59,6 +81,24 @@ export function useYPrintOverrides() {
     else yPrintOverrides.set(itemId, next);
   }, []);
   return [overrides, setOverride];
+}
+
+// Tweakable game-rule parameters (hoofdeiland size, waterring, starting counts)
+export function useYParams() {
+  const params = useObserved(yParams, () => {
+    const base = { ...DEFAULT_PARAMS };
+    yParams.forEach((v, k) => { base[k] = v; });
+    return base;
+  });
+  const setParam = useCallback((key, value) => {
+    const v = Math.max(0, value | 0);
+    if (v === DEFAULT_PARAMS[key]) yParams.delete(key);
+    else yParams.set(key, v);
+  }, []);
+  const resetParams = useCallback(() => {
+    doc.transact(() => { yParams.clear(); });
+  }, []);
+  return [params, { setParam, resetParams }];
 }
 
 // Custom print items — user-added items

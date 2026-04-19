@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import HexBoard, { axialToPixel, renderHex } from '../components/HexTile.jsx';
 import { usePrintableQty } from '../utils/printableQty.js';
+import { useYParams } from '../utils/useYjs.js';
 
 const PLAYER_COLORS = ['#d33', '#4a4', '#38b', '#e8b923'];
 const PLAYER_NAMES = ['Rood', 'Groen', 'Blauw', 'Geel'];
@@ -57,7 +58,8 @@ function startPlacements(size) {
 
 export default function SetupWizard({ config }) {
   const qty = usePrintableQty();
-  const steps = useMemo(() => buildSteps(config, qty), [config, qty]);
+  const [params] = useYParams();
+  const steps = useMemo(() => buildSteps(config, qty, params), [config, qty, params]);
   const [step, setStep] = useState(0);
   const current = steps[step];
 
@@ -75,7 +77,7 @@ export default function SetupWizard({ config }) {
 
       <div className="card">
         <h2 style={{ marginTop: 0 }}>Stap {step + 1}/{steps.length}: {current.title}</h2>
-        {current.render(config, qty)}
+        {current.render(config, qty, params)}
       </div>
 
       <div className="row" style={{ gap: 8 }}>
@@ -99,14 +101,14 @@ function Chips({ items }) {
   );
 }
 
-function buildSteps(cfg, qty) {
+function buildSteps(cfg, qty, params) {
   const steps = [];
 
   steps.push({
     title: 'Leg het hoofdeiland',
     render: () => (
       <>
-        <p>Plaats <b>7 landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
+        <p>Plaats <b>{params.hoofdeiland_tegels} landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
         <p className="small muted">Voorbeeld met nummertokens:</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
@@ -117,7 +119,7 @@ function buildSteps(cfg, qty) {
     title: 'Leg de waterring',
     render: () => (
       <>
-        <p>Leg <b>12 watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
+        <p>Leg <b>{params.waterring_tegels} watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
         <HexBoard tiles={mainPlusWater(cfg)} size={26} />
         <Chips items={[
           `Water geprint: ${qty('water_hex')}×`,
@@ -134,7 +136,7 @@ function buildSteps(cfg, qty) {
         <>
           <p>Leg alle ontdekkingstegels <b>in willekeurige volgorde in de Ontdekking-bak</b>. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke eraan komt. Tel bij elkaar wat erin moet:</p>
           <ul>
-            <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - 12)}</b>, alle water-prints minus de 12 van de ring)</li>
+            <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - params.waterring_tegels)}</b>, water-prints minus de {params.waterring_tegels} van de ring)</li>
             {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
             {cfg.vis && <li>Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
             <li>Extra land (bos/heuvels/bergen/akkers/weiden): <b>{qty('extra_land', 12)}</b></li>
@@ -157,7 +159,7 @@ function buildSteps(cfg, qty) {
     title: 'Plaats havens',
     render: () => (
       <>
-        <p>Plaats <b>{qty('havens', 5)} haven{qty('havens', 5) === 1 ? '' : 's'}</b> aan de rand van het hoofdeiland, tegen water aan:</p>
+        <p>Plaats <b>{params.havens} haven{params.havens === 1 ? '' : 's'}</b> aan de rand van het hoofdeiland, tegen water aan:</p>
         <ul className="small">
           <li>2× Generiek (3:1 alles)</li>
           <li>1× Hout (2:1)</li>
@@ -173,7 +175,7 @@ function buildSteps(cfg, qty) {
             { q: 0, r: 2, label: '🧱' },
             { q: -1, r: -1, label: '🌾' },
           ];
-          return haven.slice(0, qty('havens', 5)).map((h, i) => {
+          return haven.slice(0, params.havens).map((h, i) => {
             const [x, y] = axialToPixel(h.q, h.r, 22);
             return (
               <g key={`hv${i}`} transform={`translate(${x}, ${y})`}>
@@ -203,7 +205,7 @@ function buildSteps(cfg, qty) {
       title: 'Leg getijdenmarkers',
       render: () => (
         <>
-          <p>Leg de <b>3 getijdenmarkers</b> (①②③) op willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
+          <p>Leg de <b>{params.getijdenmarkers} getijdenmarkers</b> op willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
           <div className="row wrap" style={{ gap: 10, justifyContent: 'center', fontSize: 32 }}>
             <span>①</span><span>②</span><span>③</span>
           </div>
@@ -340,10 +342,10 @@ function buildSteps(cfg, qty) {
       ));
       return (
         <>
-          <p>In <b>omgekeerde volgorde</b> plaatst elke speler <b>2 dorpen + 2 wegen</b>.</p>
+          <p>In <b>omgekeerde volgorde</b> plaatst elke speler <b>{params.startdorpen_per_speler} dorpen + {params.startwegen_per_speler} wegen</b>.</p>
           {cfg.scheepswerf && <p className="small">⛵ Minstens 1 dorp moet op een <b>kustintersectie</b> liggen.</p>}
           <HexBoard tiles={mainIslandTiles(cfg)} size={size} extra={settlementEls} />
-          <Chips items={PLAYER_NAMES.map((n, i) => `${n}: 2 dorpen`)} />
+          <Chips items={PLAYER_NAMES.map((n) => `${n}: ${params.startdorpen_per_speler} dorpen`)} />
         </>
       );
     },
@@ -356,8 +358,8 @@ function buildSteps(cfg, qty) {
         <p>Elke speler ontvangt de grondstoffen rondom hun <b>2e dorp</b>.</p>
         <ul>
           <li>1 grondstof per aangrenzende productie-hex bij 2e dorp</li>
-          {cfg.vis && <li>🐟 +1 vis extra (per speler)</li>}
-          {cfg.goud && <li>🪙 +2 goudmunten (per speler)</li>}
+          {cfg.vis && params.startvis > 0 && <li>🐟 +{params.startvis} vis extra (per speler)</li>}
+          {cfg.goud && params.startgoud > 0 && <li>🪙 +{params.startgoud} goudmunten (per speler)</li>}
         </ul>
         <p className="small muted">Tip: leg de 1e dorpen ergens slim en bouw je openingsstrategie op rond het 2e dorp — dat bepaalt je start.</p>
       </>
