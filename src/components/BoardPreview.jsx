@@ -347,8 +347,11 @@ export default function BoardPreview({ activeItems, printed }) {
           {' · '}
           Water: {realWater}{emptyWater > 0 ? ` (+${emptyWater})` : ''}
         </div>
-        <button className="btn-secondary" onClick={() => setSeed(s => s + 1)}
-          style={{ padding: '6px 12px', fontSize: 12 }}>🎲</button>
+        <button
+          className="btn"
+          onClick={() => setSeed(Math.floor(Math.random() * 1_000_000))}
+          style={{ padding: '8px 14px', fontSize: 14 }}
+        >🎲 Shuffle</button>
       </div>
 
       {(plates.overflowLand > 0 || plates.overflowWater > 0) && (
