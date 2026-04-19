@@ -192,7 +192,7 @@ function buildSteps(cfg, qty) {
     title: 'Nummertokens',
     render: () => (
       <>
-        <p>Leg nummertokens op de {cfg.vulkaan ? 'productieve' : 'niet-woestijn'}-hexen.{cfg.procedureel && ' Houd 15 nummertokens reserve apart voor tegels die je tijdens het spel ontdekt.'}</p>
+        <p>Leg nummertokens op de {cfg.vulkaan ? 'productieve' : 'niet-woestijn'}-hexen van het hoofdeiland.{cfg.procedureel && ' De overige nummertokens hou je apart — die gebruik je voor productieve tegels die je tijdens het spel ontdekt.'}</p>
         <p className="small muted">Voorbeeld: 6 en 8 krijgen <span style={{ color: 'var(--red)' }}>rode</span> tekst (meest kans).</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
