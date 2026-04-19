@@ -150,14 +150,34 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
         <>
           <p>Alle overige tegels (uit álle soorten) gaan <b>door elkaar</b> in de Ontdekking-bak — gewoon in één hoop schudden en willekeurig over de vakken verdelen. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke soort eraan komt. Reference totaal per type:</p>
           <ul>
-            <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - params.waterring_tegels)}</b>, water-prints minus de {params.waterring_tegels} van de ring)</li>
-            {cfg.specerij && <li>🌴 Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
-            {cfg.vis && <li>🐟 Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
-            <li>🌲 Bos (exclusief 2 op hoofdeiland): <b>{Math.max(0, qty('bos_hex', 7) - 2)}</b></li>
-            <li>🌾 Akkers (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('akkers_hex', 7) - 1)}</b></li>
-            <li>🐑 Weiden (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('weiden_hex', 7) - 1)}</b></li>
-            <li>🧱 Heuvels (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('heuvels_hex', 7) - 1)}</b></li>
-            <li>⛰️ Bergen (exclusief 1 op hoofdeiland): <b>{Math.max(0, qty('bergen_hex', 7) - 1)}</b></li>
+            {(() => {
+              const landTypes = [
+                { id: 'bos_hex', label: '🌲 Bos' },
+                { id: 'akkers_hex', label: '🌾 Akkers' },
+                { id: 'weiden_hex', label: '🐑 Weiden' },
+                { id: 'heuvels_hex', label: '🧱 Heuvels' },
+                { id: 'bergen_hex', label: '⛰️ Bergen' },
+              ];
+              const totalLand = landTypes.reduce((s, l) => s + qty(l.id, 7), 0);
+              const landInBak = Math.max(0, totalLand - (params.hoofdeiland_tegels - 1));
+              const waterInBak = Math.max(0, qty('water_hex') - params.waterring_tegels);
+              return (
+                <>
+                  <li>💧 Overige watertegels: <b>{waterInBak}</b></li>
+                  {cfg.specerij && <li>🌴 Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
+                  {cfg.vis && <li>🐟 Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
+                  <li>
+                    🏞️ Landtegels totaal: <b>{landInBak}</b>
+                    <span className="small muted"> (geprint: {totalLand} − {params.hoofdeiland_tegels - 1} voor hoofdeiland)</span>
+                    <ul className="tiny muted">
+                      {landTypes.map(l => (
+                        <li key={l.id}>{l.label}: {qty(l.id, 7)}× geprint</li>
+                      ))}
+                    </ul>
+                  </li>
+                </>
+              );
+            })()}
             {cfg.ruine && <li>Ruïnes: <b>{qty('ruine_hex', 2)}</b></li>}
             {cfg.maalstroom && <li>Maalstroom: <b>{qty('maalstroom_hex', 1)}</b></li>}
             {cfg.rif && <li>Rif (stenen): <b>{qty('rif_hex', 2)}</b></li>}
