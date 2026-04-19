@@ -79,6 +79,7 @@ export default function BoardPreview({ activeItems, printed }) {
     const waterPool = [];
     activeItems.forEach(it => {
       if (it.size !== 'hex') return;
+      if (it.id === 'basis_land' || it.id === 'basis_water') return; // base plates aren't board tiles
       const have = Math.min(countOf(printed, it.id), it.qty);
       if (have <= 0) return;
       const mapping = HEX_TYPES[it.id];
