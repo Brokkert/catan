@@ -135,7 +135,7 @@ function buildSteps(cfg, qty) {
         <>
           <p>Leg alle ontdekkingstegels <b>in willekeurige volgorde in de Ontdekking-bak</b>. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke eraan komt. Tel bij elkaar wat erin moet:</p>
           <ul>
-            <li>Open zee: <b>12</b></li>
+            <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - 12)}</b>, alle water-prints minus de 12 van de ring)</li>
             {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
             {cfg.vis && <li>Koraalrif: <b>{qty('koraal_hex', 3)}</b></li>}
             <li>Extra land (bos/heuvels/bergen/akkers/weiden): <b>{qty('extra_land', 12)}</b></li>
