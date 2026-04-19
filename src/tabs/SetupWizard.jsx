@@ -106,7 +106,7 @@ function buildSteps(cfg, qty) {
     title: 'Leg het hoofdeiland',
     render: () => (
       <>
-        <p>Plaats <b>{qty('land_hex', 7)} landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
+        <p>Plaats <b>7 landtegels</b> in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>}</p>
         <p className="small muted">Voorbeeld met nummertokens:</p>
         <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
       </>
@@ -117,7 +117,7 @@ function buildSteps(cfg, qty) {
     title: 'Leg de waterring',
     render: () => (
       <>
-        <p>Leg <b>{Math.min(qty('water_hex'), 12)} watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
+        <p>Leg <b>12 watertegels</b> rond het hoofdeiland.{cfg.procedureel && ' De overige watertegels uit je voorraad gebruik je voor ontdekkingen.'}</p>
         <HexBoard tiles={mainPlusWater(cfg)} size={26} />
         <Chips items={[
           `Water geprint: ${qty('water_hex')}×`,
@@ -203,7 +203,7 @@ function buildSteps(cfg, qty) {
       title: 'Leg getijdenmarkers',
       render: () => (
         <>
-          <p>Leg <b>{qty('getijden_markers', 3)} getijdenmarkers</b> (①②③) op willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
+          <p>Leg de <b>3 getijdenmarkers</b> (①②③) op willekeurige buitenrandtegels. Die bepalen welke tegels als volgende overstromen.</p>
           <div className="row wrap" style={{ gap: 10, justifyContent: 'center', fontSize: 32 }}>
             <span>①</span><span>②</span><span>③</span>
           </div>
