@@ -1,35 +1,38 @@
 import { useMemo, useState } from 'react';
 
-// Map print item IDs to logical hex types + display color + emoji
+// Tile types with display color, gradient shade, emoji, and whether it produces (gets number token)
 const HEX_TYPES = {
   land_hex: [
-    { type: 'bos', color: '#2d5a2d', emoji: '🌲', count: 2 },
-    { type: 'heuvels', color: '#c2622c', emoji: '🧱', count: 1 },
-    { type: 'bergen', color: '#6b6b6b', emoji: '⛰️', count: 1 },
-    { type: 'akkers', color: '#e0b93a', emoji: '🌾', count: 1 },
-    { type: 'weiden', color: '#7bb33a', emoji: '🐑', count: 1 },
-    { type: 'woestijn', color: '#caa86a', emoji: '🏜️', count: 1 },
+    { type: 'bos', color: '#2d5a2d', shade: '#1a3a1a', emoji: '🌲', produces: true, count: 2 },
+    { type: 'heuvels', color: '#c2622c', shade: '#7a3d18', emoji: '🧱', produces: true, count: 1 },
+    { type: 'bergen', color: '#6b6b6b', shade: '#3d3d3d', emoji: '⛰️', produces: true, count: 1 },
+    { type: 'akkers', color: '#e0b93a', shade: '#9c7d1a', emoji: '🌾', produces: true, count: 1 },
+    { type: 'weiden', color: '#7bb33a', shade: '#4c7822', emoji: '🐑', produces: true, count: 1 },
+    { type: 'woestijn', color: '#caa86a', shade: '#8a6f3a', emoji: '🏜️', produces: false, count: 1 },
   ],
   extra_land: [
-    { type: 'bos', color: '#2d5a2d', emoji: '🌲', count: 3 },
-    { type: 'heuvels', color: '#c2622c', emoji: '🧱', count: 2 },
-    { type: 'bergen', color: '#6b6b6b', emoji: '⛰️', count: 2 },
-    { type: 'akkers', color: '#e0b93a', emoji: '🌾', count: 3 },
-    { type: 'weiden', color: '#7bb33a', emoji: '🐑', count: 2 },
+    { type: 'bos', color: '#2d5a2d', shade: '#1a3a1a', emoji: '🌲', produces: true, count: 3 },
+    { type: 'heuvels', color: '#c2622c', shade: '#7a3d18', emoji: '🧱', produces: true, count: 2 },
+    { type: 'bergen', color: '#6b6b6b', shade: '#3d3d3d', emoji: '⛰️', produces: true, count: 2 },
+    { type: 'akkers', color: '#e0b93a', shade: '#9c7d1a', emoji: '🌾', produces: true, count: 3 },
+    { type: 'weiden', color: '#7bb33a', shade: '#4c7822', emoji: '🐑', produces: true, count: 2 },
   ],
-  jungle_hex: [{ type: 'jungle', color: '#1e4a1e', emoji: '🌴' }],
-  koraal_hex: [{ type: 'koraal', color: '#2a7099', emoji: '🐟' }],
-  vulkaan_hex: [{ type: 'vulkaan', color: '#4a1212', emoji: '🌋' }],
-  ruine_hex: [{ type: 'ruine', color: '#5a4a3a', emoji: '🏛️' }],
-  maalstroom_hex: [{ type: 'maalstroom', color: '#1a3a5a', emoji: '🌀' }],
-  piraat_hex: [{ type: 'piraat', color: '#2a1a1a', emoji: '🏴\u200d☠️' }],
-  drakenei_hex: [{ type: 'drakenei', color: '#3a1a3a', emoji: '🥚' }],
-  handelspost_hex: [{ type: 'handelspost', color: '#8a6a2a', emoji: '⚓' }],
-  goudmijn_hex: [{ type: 'goudmijn', color: '#8a6a1a', emoji: '💰' }],
-  goudrivier_hex: [{ type: 'goudrivier', color: '#d4a02a', emoji: '✨' }],
-  water_hex: [{ type: 'water', color: '#2a5a8a', emoji: '🌊' }],
-  open_zee: [{ type: 'water', color: '#2a5a8a', emoji: '🌊' }],
+  jungle_hex: [{ type: 'jungle', color: '#1e4a1e', shade: '#0c2d0c', emoji: '🌴', produces: true }],
+  koraal_hex: [{ type: 'koraal', color: '#2a7099', shade: '#174a6a', emoji: '🐟', produces: true, water: true }],
+  vulkaan_hex: [{ type: 'vulkaan', color: '#4a1212', shade: '#2a0505', emoji: '🌋', produces: false, isVolcano: true }],
+  ruine_hex: [{ type: 'ruine', color: '#5a4a3a', shade: '#2f251c', emoji: '🏛️', produces: false }],
+  maalstroom_hex: [{ type: 'maalstroom', color: '#1a3a5a', shade: '#0a1f35', emoji: '🌀', produces: false, water: true }],
+  piraat_hex: [{ type: 'piraat', color: '#2a1a1a', shade: '#110808', emoji: '🏴\u200d☠️', produces: false }],
+  drakenei_hex: [{ type: 'drakenei', color: '#3a1a3a', shade: '#1f0a1f', emoji: '🥚', produces: false }],
+  handelspost_hex: [{ type: 'handelspost', color: '#8a6a2a', shade: '#5a4015', emoji: '⚓', produces: false }],
+  goudmijn_hex: [{ type: 'goudmijn', color: '#8a6a1a', shade: '#5a4010', emoji: '💰', produces: true }],
+  goudrivier_hex: [{ type: 'goudrivier', color: '#d4a02a', shade: '#9c7010', emoji: '✨', produces: true }],
+  water_hex: [{ type: 'water', color: '#2a5a8a', shade: '#174068', emoji: '', produces: false, water: true }],
+  open_zee: [{ type: 'water', color: '#2a5a8a', shade: '#174068', emoji: '', produces: false, water: true }],
 };
+
+const NUMBER_POOL = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12];
+const PLAYER_COLORS = ['#d33', '#4a4', '#38b', '#e8b923'];
 
 function countOf(printed, id) {
   const v = printed[id];
@@ -38,19 +41,24 @@ function countOf(printed, id) {
   return 0;
 }
 
-// Simple seeded shuffle for deterministic-ish randomness per click
-function seededShuffle(arr, seed) {
-  const a = [...arr];
+function seededRandom(seed) {
   let s = seed;
-  for (let i = a.length - 1; i > 0; i--) {
+  return () => {
     s = (s * 9301 + 49297) % 233280;
-    const j = Math.floor((s / 233280) * (i + 1));
+    return s / 233280;
+  };
+}
+
+function seededShuffle(arr, seed) {
+  const rand = seededRandom(seed);
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
 
-// Axial hex rings. Ring 0 = center. Ring r has 6r hexes.
 function hexRing(radius) {
   if (radius === 0) return [[0, 0]];
   const results = [];
@@ -71,21 +79,32 @@ function axialToPixel(q, r, size) {
   return [x, y];
 }
 
-export default function BoardPreview({ activeItems, printed }) {
-  const [seed, setSeed] = useState(() => Date.now() % 1000);
+function hexCorner(cx, cy, size, i) {
+  const a = (Math.PI / 3) * i + Math.PI / 6;
+  return [cx + size * Math.cos(a), cy + size * Math.sin(a)];
+}
 
-  const { landPool, waterPool, plates } = useMemo(() => {
+function roundKey(x, y) {
+  return `${Math.round(x * 10)},${Math.round(y * 10)}`;
+}
+
+export default function BoardPreview({ activeItems, printed }) {
+  const [seed, setSeed] = useState(() => Date.now() % 10000);
+
+  const {
+    landPool, waterPool, plates, figures,
+  } = useMemo(() => {
     const landPool = [];
     const waterPool = [];
     activeItems.forEach(it => {
       if (it.size !== 'hex') return;
-      if (it.id === 'basis_land' || it.id === 'basis_water') return; // base plates aren't board tiles
+      if (it.id === 'basis_land' || it.id === 'basis_water') return;
       const have = Math.min(countOf(printed, it.id), it.qty);
       if (have <= 0) return;
       const mapping = HEX_TYPES[it.id];
       if (!mapping) {
         for (let i = 0; i < have; i++) {
-          landPool.push({ type: 'custom', color: '#555', emoji: '❓', label: it.name });
+          landPool.push({ type: 'custom', color: '#555', shade: '#333', emoji: '❓', label: it.name });
         }
         return;
       }
@@ -94,11 +113,8 @@ export default function BoardPreview({ activeItems, printed }) {
         const share = Math.round(have * (m.count || 1) / totalMappingCount);
         for (let i = 0; i < share; i++) {
           const hex = { ...m, label: it.name };
-          if (it.id === 'water_hex' || it.id === 'open_zee' || it.id === 'koraal_hex' || it.id === 'maalstroom_hex') {
-            waterPool.push(hex);
-          } else {
-            landPool.push(hex);
-          }
+          if (m.water) waterPool.push(hex);
+          else landPool.push(hex);
         }
       });
     });
@@ -108,54 +124,198 @@ export default function BoardPreview({ activeItems, printed }) {
       water: countOf(printed, 'basis_water'),
     };
 
-    // Pad pools with empty plates if user has more plates than tiles
-    const emptyLand = Math.max(0, plates.land - landPool.length);
-    const emptyWater = Math.max(0, plates.water - waterPool.length);
-    for (let i = 0; i < emptyLand; i++) {
-      landPool.push({ type: 'empty-land', color: 'transparent', emoji: '', label: 'Lege land-basisplaat', empty: true, stroke: '#5a4a2a' });
+    // If user has basisplaten printed, tiles must fit in them (cap + pad).
+    // If no plates yet, show tiles loose.
+    let overflowLand = 0, overflowWater = 0;
+    if (plates.land > 0) {
+      overflowLand = Math.max(0, landPool.length - plates.land);
+      if (overflowLand > 0) landPool.splice(plates.land);
+      const emptyLand = plates.land - landPool.length;
+      for (let i = 0; i < emptyLand; i++) {
+        landPool.push({ type: 'empty-land', color: 'transparent', shade: 'transparent', emoji: '', empty: true });
+      }
     }
-    for (let i = 0; i < emptyWater; i++) {
-      waterPool.push({ type: 'empty-water', color: 'transparent', emoji: '', label: 'Lege water-basisplaat', empty: true, stroke: '#2a4a6a' });
+    if (plates.water > 0) {
+      overflowWater = Math.max(0, waterPool.length - plates.water);
+      if (overflowWater > 0) waterPool.splice(plates.water);
+      const emptyWater = plates.water - waterPool.length;
+      for (let i = 0; i < emptyWater; i++) {
+        waterPool.push({ type: 'empty-water', color: 'transparent', shade: 'transparent', emoji: '', empty: true, water: true });
+      }
     }
-    return { landPool, waterPool, plates };
-  }, [activeItems, printed, seed]);
+    plates.overflowLand = overflowLand;
+    plates.overflowWater = overflowWater;
+
+    const figures = {
+      rover: countOf(printed, 'rover') > 0,
+      piraat: countOf(printed, 'piraat_schip') > 0,
+      draak: countOf(printed, 'draak_fig') > 0,
+      dorpen: countOf(printed, 'dorpen'),         // per player × 4
+      steden: countOf(printed, 'steden'),
+      wegen: countOf(printed, 'wegen'),
+      handelsschip: countOf(printed, 'handelsschip_fig'),
+      oorlogsschip: countOf(printed, 'oorlogsschip_fig'),
+      vissersboot: countOf(printed, 'vissersboot_fig'),
+      vuurtoren: countOf(printed, 'vuurtoren_fig'),
+      havens: countOf(printed, 'havens'),
+      monsters: countOf(printed, 'wilde_beesten') + countOf(printed, 'stenen_golems') + countOf(printed, 'zeemonsters'),
+      nummers: countOf(printed, 'nummer_tokens'),
+    };
+
+    return { landPool, waterPool, plates, figures };
+  }, [activeItems, printed]);
 
   const totalTiles = landPool.length + waterPool.length;
 
-  const hexes = useMemo(() => {
-    if (totalTiles === 0) return [];
+  const board = useMemo(() => {
+    if (totalTiles === 0) return null;
+    const rand = seededRandom(seed);
     const shuffledLand = seededShuffle(landPool, seed);
     const shuffledWater = seededShuffle(waterPool, seed + 1);
 
-    const result = [];
-    // Place 1 land in center, then expanding rings — prefer land first inside, water outside
+    // Place land first (inner rings), then water (outer rings)
+    const hexes = [];
     let landIdx = 0, waterIdx = 0;
-    for (let r = 0; r < 6 && result.length < totalTiles; r++) {
+    for (let r = 0; r < 6 && hexes.length < totalTiles; r++) {
       const ring = hexRing(r);
       for (const [q, rr] of ring) {
-        if (result.length >= totalTiles) break;
-        const radius = Math.max(Math.abs(q), Math.abs(rr), Math.abs(q + rr));
+        if (hexes.length >= totalTiles) break;
         let hex;
-        if (radius <= 1 && landIdx < shuffledLand.length) {
-          hex = shuffledLand[landIdx++];
-        } else if (radius === 2 && landIdx < shuffledLand.length) {
+        if (landIdx < shuffledLand.length) {
           hex = shuffledLand[landIdx++];
         } else if (waterIdx < shuffledWater.length) {
           hex = shuffledWater[waterIdx++];
-        } else if (landIdx < shuffledLand.length) {
-          hex = shuffledLand[landIdx++];
-        } else {
-          break;
-        }
-        result.push({ q, r: rr, ...hex });
+        } else break;
+        hexes.push({ q, r: rr, ...hex });
       }
     }
-    return result;
-  }, [landPool, waterPool, seed, totalTiles]);
 
-  const size = 28;
-  const bounds = useMemo(() => {
-    if (hexes.length === 0) return { minX: -50, minY: -50, maxX: 50, maxY: 50 };
+    // Assign number tokens to productive tiles
+    const numbers = seededShuffle(NUMBER_POOL, seed + 2);
+    let nIdx = 0;
+    hexes.forEach(h => {
+      if (h.produces && nIdx < numbers.length && figures.nummers > 0) {
+        h.number = numbers[nIdx++];
+      }
+    });
+
+    // Place rover on first volcano, else first desert
+    let roverHex = hexes.find(h => h.isVolcano) || hexes.find(h => h.type === 'woestijn');
+    if (!roverHex || !figures.rover) roverHex = null;
+
+    // Place piraat on an outer water tile
+    let piraatHex = null;
+    if (figures.piraat) {
+      const waters = hexes.filter(h => h.water && !h.empty);
+      if (waters.length) piraatHex = waters[Math.floor(rand() * waters.length)];
+    }
+
+    // Place draak on volcano
+    let draakHex = null;
+    if (figures.draak) {
+      draakHex = hexes.find(h => h.isVolcano);
+    }
+
+    // Compute corners (for settlements) and edges (for roads)
+    const size = 30;
+    const cornerMap = new Map(); // key -> { x, y, hexes: [h] }
+    const edgeMap = new Map();   // key -> { x1, y1, x2, y2, hexes: [h] }
+    hexes.forEach(h => {
+      const [cx, cy] = axialToPixel(h.q, h.r, size);
+      const corners = [];
+      for (let i = 0; i < 6; i++) corners.push(hexCorner(cx, cy, size, i));
+      corners.forEach((c, i) => {
+        const k = roundKey(c[0], c[1]);
+        if (!cornerMap.has(k)) cornerMap.set(k, { x: c[0], y: c[1], hexes: [] });
+        cornerMap.get(k).hexes.push(h);
+        const next = corners[(i + 1) % 6];
+        const ek1 = roundKey(c[0], c[1]) + '|' + roundKey(next[0], next[1]);
+        const ek2 = roundKey(next[0], next[1]) + '|' + roundKey(c[0], c[1]);
+        const ek = ek1 < ek2 ? ek1 : ek2;
+        if (!edgeMap.has(ek)) edgeMap.set(ek, { x1: c[0], y1: c[1], x2: next[0], y2: next[1], hexes: [] });
+        edgeMap.get(ek).hexes.push(h);
+      });
+    });
+
+    // Settlements/cities at land corners. Use total printed across players.
+    const settlementsAvail = Math.min(figures.dorpen, 20);
+    const citiesAvail = Math.min(figures.steden, 12);
+    const landCorners = [...cornerMap.values()].filter(c =>
+      c.hexes.some(h => !h.water && !h.empty)
+    );
+    const shuffledCorners = seededShuffle(landCorners, seed + 3);
+    const settlements = [];
+    for (let i = 0; i < settlementsAvail && i < shuffledCorners.length; i++) {
+      settlements.push({ ...shuffledCorners[i], player: i % 4 });
+    }
+    const cities = [];
+    for (let i = 0; i < citiesAvail && i + settlements.length < shuffledCorners.length; i++) {
+      cities.push({ ...shuffledCorners[settlementsAvail + i], player: i % 4 });
+    }
+
+    // Roads: on edges adjacent to settlements first, then random
+    const roadsAvail = Math.min(figures.wegen, 30);
+    const landEdges = [...edgeMap.values()].filter(e =>
+      e.hexes.some(h => !h.water && !h.empty)
+    );
+    const shuffledEdges = seededShuffle(landEdges, seed + 4);
+    const roads = [];
+    for (let i = 0; i < roadsAvail && i < shuffledEdges.length; i++) {
+      roads.push({ ...shuffledEdges[i], player: i % 4 });
+    }
+
+    // Ships on water edges
+    const shipsAvail = Math.min(
+      figures.handelsschip + figures.oorlogsschip + figures.vissersboot,
+      24
+    );
+    const waterEdges = [...edgeMap.values()].filter(e =>
+      e.hexes.every(h => h.water || h.empty)
+    );
+    const shuffledWaterEdges = seededShuffle(waterEdges, seed + 5);
+    const ships = [];
+    for (let i = 0; i < shipsAvail && i < shuffledWaterEdges.length; i++) {
+      ships.push({ ...shuffledWaterEdges[i], player: i % 4 });
+    }
+
+    // Harbors on coast edges (land-water boundary)
+    const harborsAvail = Math.min(figures.havens, 9);
+    const coastEdges = [...edgeMap.values()].filter(e => {
+      const hasLand = e.hexes.some(h => !h.water && !h.empty);
+      const hasWater = e.hexes.some(h => h.water || h.empty);
+      return hasLand && hasWater;
+    });
+    const shuffledCoastEdges = seededShuffle(coastEdges, seed + 6);
+    const harbors = [];
+    for (let i = 0; i < harborsAvail && i < shuffledCoastEdges.length; i++) {
+      harbors.push(shuffledCoastEdges[i]);
+    }
+
+    // Vuurtoren on coast corner (land-water)
+    let vuurtorenCorner = null;
+    if (figures.vuurtoren > 0) {
+      const coastCorners = [...cornerMap.values()].filter(c => {
+        const hasLand = c.hexes.some(h => !h.water && !h.empty);
+        const hasWater = c.hexes.some(h => h.water || h.empty);
+        return hasLand && hasWater;
+      });
+      if (coastCorners.length) vuurtorenCorner = coastCorners[Math.floor(rand() * coastCorners.length)];
+    }
+
+    return { hexes, size, roverHex, piraatHex, draakHex, settlements, cities, roads, ships, harbors, vuurtorenCorner };
+  }, [landPool, waterPool, seed, totalTiles, figures]);
+
+  if (!board) {
+    return (
+      <div>
+        <p className="muted">Geen tegels of basisplaten geprint. Zet bij 🗺️ Tegels het aantal hoger om hier iets te zien.</p>
+      </div>
+    );
+  }
+
+  const { hexes, size, roverHex, piraatHex, draakHex, settlements, cities, roads, ships, harbors, vuurtorenCorner } = board;
+
+  const bounds = (() => {
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     hexes.forEach(h => {
       const [x, y] = axialToPixel(h.q, h.r, size);
@@ -165,75 +325,202 @@ export default function BoardPreview({ activeItems, printed }) {
       maxY = Math.max(maxY, y + size);
     });
     return { minX, minY, maxX, maxY };
-  }, [hexes]);
+  })();
 
-  const padding = 10;
+  const padding = 14;
   const viewBox = `${bounds.minX - padding} ${bounds.minY - padding} ${bounds.maxX - bounds.minX + 2 * padding} ${bounds.maxY - bounds.minY + 2 * padding}`;
 
-  if (totalTiles === 0) {
-    return (
-      <div>
-        <p className="muted">Geen tegels of basisplaten geprint. Zet bij 🗺️ Tegels het aantal van land/water-tegels of -basisplaten hoger om hier iets te zien.</p>
-      </div>
-    );
-  }
-
-  const realLand = landPool.filter(h => !h.empty).length;
-  const realWater = waterPool.filter(h => !h.empty).length;
-  const emptyLand = landPool.length - realLand;
-  const emptyWater = waterPool.length - realWater;
-
-  const plateWarning = [];
-  if (plates.land < realLand) plateWarning.push(`${realLand - plates.land} land-basisplaten tekort`);
-  if (plates.water < realWater) plateWarning.push(`${realWater - plates.water} water-basisplaten tekort`);
+  const realLand = hexes.filter(h => !h.water && !h.empty).length;
+  const realWater = hexes.filter(h => h.water && !h.empty).length;
+  const emptyLand = hexes.filter(h => h.empty && !h.water).length;
+  const emptyWater = hexes.filter(h => h.empty && h.water).length;
 
   return (
     <div>
       <div className="row between mb">
         <div className="small muted">
-          Land: {realLand}{emptyLand > 0 ? ` (+${emptyLand} leeg)` : ''}
+          Land: {realLand}{emptyLand > 0 ? ` (+${emptyLand})` : ''}
           {' · '}
-          Water: {realWater}{emptyWater > 0 ? ` (+${emptyWater} leeg)` : ''}
+          Water: {realWater}{emptyWater > 0 ? ` (+${emptyWater})` : ''}
         </div>
         <button className="btn-secondary" onClick={() => setSeed(s => s + 1)}
           style={{ padding: '6px 12px', fontSize: 12 }}>🎲</button>
       </div>
 
-      <div style={{ background: '#0a1420', borderRadius: 8, padding: 8, overflow: 'auto' }}>
+      {(plates.overflowLand > 0 || plates.overflowWater > 0) && (
+        <p className="small mb" style={{ color: 'var(--orange)' }}>
+          ⚠️ Tekort basisplaten:{' '}
+          {plates.overflowLand > 0 && `${plates.overflowLand} land-tegels passen niet`}
+          {plates.overflowLand > 0 && plates.overflowWater > 0 && ' · '}
+          {plates.overflowWater > 0 && `${plates.overflowWater} water-tegels passen niet`}
+        </p>
+      )}
+
+      <div style={{ background: 'radial-gradient(ellipse, #1a2a3a 0%, #070a10 100%)', borderRadius: 10, padding: 6, overflow: 'auto' }}>
         <svg viewBox={viewBox} style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <defs>
+            <filter id="hexshadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.5" />
+              <feOffset dx="0" dy="1" result="offsetblur" />
+              <feComponentTransfer><feFuncA type="linear" slope="0.6" /></feComponentTransfer>
+              <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            {hexes.map((h, i) => (
+              <radialGradient key={i} id={`g${i}`} cx="50%" cy="40%" r="70%">
+                <stop offset="0%" stopColor={h.color} />
+                <stop offset="100%" stopColor={h.shade} />
+              </radialGradient>
+            ))}
+          </defs>
+
+          {/* Tiles */}
           {hexes.map((h, i) => {
             const [x, y] = axialToPixel(h.q, h.r, size);
             const points = Array.from({ length: 6 }, (_, k) => {
               const a = (Math.PI / 3) * k + Math.PI / 6;
               return `${x + size * Math.cos(a)},${y + size * Math.sin(a)}`;
             }).join(' ');
-            const strokeColor = h.stroke || '#0d1117';
-            const strokeWidth = h.empty ? 1.5 : 1.5;
-            const dash = h.empty ? '3 2' : undefined;
+            const innerPoints = Array.from({ length: 6 }, (_, k) => {
+              const a = (Math.PI / 3) * k + Math.PI / 6;
+              return `${x + (size - 3) * Math.cos(a)},${y + (size - 3) * Math.sin(a)}`;
+            }).join(' ');
+            if (h.empty) {
+              const strokeColor = h.water ? '#2a4a6a' : '#6a5530';
+              return (
+                <g key={i}>
+                  <polygon points={points} fill="transparent" stroke={strokeColor} strokeWidth="2" strokeDasharray="3 2" />
+                </g>
+              );
+            }
             return (
-              <g key={i}>
-                <polygon
-                  points={points}
-                  fill={h.color}
-                  stroke={strokeColor}
-                  strokeWidth={strokeWidth}
-                  strokeDasharray={dash}
-                />
-                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="14" fill="#fff">{h.emoji}</text>}
+              <g key={i} filter="url(#hexshadow)">
+                {/* outer rim (base plate) */}
+                <polygon points={points} fill="#0a0a0a" stroke="#1a1a1a" strokeWidth="0.5" />
+                {/* inset tile */}
+                <polygon points={innerPoints} fill={`url(#g${i})`} stroke={h.shade} strokeWidth="0.5" />
+                {h.emoji && <text x={x} y={y + 5} textAnchor="middle" fontSize="16" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.6))' }}>{h.emoji}</text>}
               </g>
             );
           })}
+
+          {/* Number tokens */}
+          {hexes.map((h, i) => {
+            if (!h.number) return null;
+            const [x, y] = axialToPixel(h.q, h.r, size);
+            const isRed = h.number === 6 || h.number === 8;
+            return (
+              <g key={`n${i}`} transform={`translate(${x}, ${y + 10})`}>
+                <circle r="7" fill="#f0e6d2" stroke="#8a6a3a" strokeWidth="0.7" />
+                <text y="3" textAnchor="middle" fontSize="9" fontWeight="700"
+                  fill={isRed ? '#c22' : '#222'}>{h.number}</text>
+              </g>
+            );
+          })}
+
+          {/* Harbors */}
+          {harbors.map((h, i) => {
+            const mx = (h.x1 + h.x2) / 2;
+            const my = (h.y1 + h.y2) / 2;
+            return (
+              <g key={`hv${i}`} transform={`translate(${mx}, ${my})`}>
+                <circle r="4.5" fill="#8a5a2a" stroke="#3a2a10" strokeWidth="0.7" />
+                <text y="2" textAnchor="middle" fontSize="6" fill="#fff">⚓</text>
+              </g>
+            );
+          })}
+
+          {/* Roads */}
+          {roads.map((r, i) => (
+            <line key={`r${i}`} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2}
+              stroke={PLAYER_COLORS[r.player]} strokeWidth="3" strokeLinecap="round" />
+          ))}
+
+          {/* Ships */}
+          {ships.map((s, i) => {
+            const mx = (s.x1 + s.x2) / 2;
+            const my = (s.y1 + s.y2) / 2;
+            return (
+              <g key={`s${i}`} transform={`translate(${mx}, ${my})`}>
+                <circle r="3.5" fill={PLAYER_COLORS[s.player]} stroke="#000" strokeWidth="0.5" />
+                <text y="1.5" textAnchor="middle" fontSize="4.5">⛵</text>
+              </g>
+            );
+          })}
+
+          {/* Settlements */}
+          {settlements.map((s, i) => (
+            <g key={`st${i}`} transform={`translate(${s.x}, ${s.y})`}>
+              <polygon points="-3,-1 0,-4 3,-1 3,3 -3,3" fill={PLAYER_COLORS[s.player]} stroke="#000" strokeWidth="0.5" />
+            </g>
+          ))}
+
+          {/* Cities */}
+          {cities.map((c, i) => (
+            <g key={`ct${i}`} transform={`translate(${c.x}, ${c.y})`}>
+              <polygon points="-4,-2 -2,-5 0,-2 4,-2 4,3 -4,3" fill={PLAYER_COLORS[c.player]} stroke="#000" strokeWidth="0.5" />
+            </g>
+          ))}
+
+          {/* Vuurtoren */}
+          {vuurtorenCorner && (
+            <g transform={`translate(${vuurtorenCorner.x}, ${vuurtorenCorner.y})`}>
+              <rect x="-2" y="-6" width="4" height="8" fill="#f0e6d2" stroke="#000" strokeWidth="0.4" />
+              <polygon points="-3,-6 3,-6 0,-9" fill="#e8b923" stroke="#000" strokeWidth="0.4" />
+            </g>
+          )}
+
+          {/* Rover */}
+          {roverHex && (() => {
+            const [x, y] = axialToPixel(roverHex.q, roverHex.r, size);
+            return (
+              <g transform={`translate(${x - 8}, ${y - 8})`}>
+                <circle r="5" fill="#222" stroke="#000" strokeWidth="0.5" />
+                <text y="2" textAnchor="middle" fontSize="8" fill="#fff">🦹</text>
+              </g>
+            );
+          })()}
+
+          {/* Piraat */}
+          {piraatHex && (() => {
+            const [x, y] = axialToPixel(piraatHex.q, piraatHex.r, size);
+            return (
+              <g transform={`translate(${x}, ${y - 8})`}>
+                <text textAnchor="middle" fontSize="14">🏴‍☠️</text>
+              </g>
+            );
+          })()}
+
+          {/* Draak */}
+          {draakHex && (() => {
+            const [x, y] = axialToPixel(draakHex.q, draakHex.r, size);
+            return (
+              <g transform={`translate(${x + 8}, ${y - 8})`}>
+                <text textAnchor="middle" fontSize="14">🐉</text>
+              </g>
+            );
+          })()}
         </svg>
       </div>
 
-      {plateWarning.length > 0 && (
-        <p className="small mt" style={{ color: 'var(--orange)' }}>
-          ⚠️ {plateWarning.join(' · ')}
-        </p>
-      )}
-      <p className="tiny muted mt">
-        Placeholder-preview: hexen worden willekeurig gerangschikt. Tik 🎲 om te shuffelen.
-      </p>
+      <Legend figures={figures} settlements={settlements.length} cities={cities.length} roads={roads.length} ships={ships.length} harbors={harbors.length} />
     </div>
+  );
+}
+
+function Legend({ figures, settlements, cities, roads, ships, harbors }) {
+  const items = [];
+  if (settlements) items.push(`🏠 ${settlements} dorpen`);
+  if (cities) items.push(`🏰 ${cities} steden`);
+  if (roads) items.push(`➖ ${roads} wegen`);
+  if (ships) items.push(`⛵ ${ships} schepen`);
+  if (harbors) items.push(`⚓ ${harbors} havens`);
+  if (figures.rover) items.push('🦹 rover');
+  if (figures.piraat) items.push('🏴‍☠️ piraat');
+  if (figures.draak) items.push('🐉 draak');
+  if (figures.vuurtoren) items.push('🏛️ vuurtoren');
+  return (
+    <p className="tiny muted mt">
+      {items.length ? items.join(' · ') : 'Placeholder-preview. Tik 🎲 voor andere rangschikking.'}
+    </p>
   );
 }
