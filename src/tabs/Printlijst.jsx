@@ -187,7 +187,7 @@ export default function Printlijst({ config }) {
       </div>
 
       {showBoard && (
-        <Modal onClose={() => setShowBoard(false)} title="🧩 Bord-preview">
+        <Modal onClose={() => setShowBoard(false)} title="🧩 Bord-voorbeeld">
           <BoardPreview activeItems={activeItems} printed={printed} />
         </Modal>
       )}

@@ -133,7 +133,7 @@ function buildSteps(cfg, qty) {
       title: 'Vul de Ontdekking-bak',
       render: () => (
         <>
-          <p>Plaats alle ontdekkingstegels <b>geshufflede in de Ontdekking-bak</b> (3D-tegels kun je niet omdraaien, dus we gebruiken een doos met vakken waar je de volgorde vooraf door elkaar legt). Tijdens spel pak je steeds de volgende uit het eerstvolgende vak — niemand weet welke tegel er volgt. Tel bij elkaar wat erin moet:</p>
+          <p>Leg alle ontdekkingstegels <b>in willekeurige volgorde in de Ontdekking-bak</b>. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke eraan komt. Tel bij elkaar wat erin moet:</p>
           <ul>
             <li>Open zee: <b>12</b></li>
             {cfg.specerij && <li>Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
@@ -148,7 +148,7 @@ function buildSteps(cfg, qty) {
             {cfg.goudmijn && <li>Goudmijn: <b>{qty('goudmijn_hex', 1)}</b></li>}
             {cfg.goudrivier && <li>Goudrivier: <b>{qty('goudrivier_hex', 1)}</b></li>}
           </ul>
-          <p className="small muted"><b>Shuffle-truc</b>: draai je om, laat een andere speler de tegels willekeurig in de vakken leggen. Of schud in een emmer en laat ze per vak "vallen" zonder te kijken.</p>
+          <p className="small muted"><b>Tip om eerlijk te schudden</b>: draai je om en laat een andere speler de tegels in willekeurige vakken leggen. Of schud ze eerst in een emmer en plaats ze daarna zonder te kijken.</p>
         </>
       ),
     });
@@ -235,8 +235,8 @@ function buildSteps(cfg, qty) {
     title: 'Tokens & trek-bakken klaarzetten',
     render: () => (
       <ul>
-        {cfg.kaartstapel && <li>Leg de <b>{qty('nummerkaarten', 36)} nummer-trekschijven</b> vooraf geshuffled in een kleine trek-bak (vervangt dobbelsteen)</li>}
-        <li>Leg de <b>{qty('ontwik_tokens', 32)} ontwikkelings-scrolls</b> geshuffled in een kleine trek-bak met vakken</li>
+        {cfg.kaartstapel && <li>Leg de <b>{qty('nummerkaarten', 36)} nummer-trekschijven</b> in willekeurige volgorde in een kleine trekbak (vervangt de dobbelsteen)</li>}
+        <li>Leg de <b>{qty('ontwik_tokens', 32)} ontwikkelings-scrolls</b> in willekeurige volgorde in een trekbak met vakken</li>
         {cfg.vis && <li>Leg de <b>{qty('vis_kaarten', 19)} vis-tokens</b> bij de bank</li>}
         {cfg.specerij && <li>Leg de <b>{qty('specerij_kaarten', 14)} specerij-potjes</b> bij de bank</li>}
         {cfg.gildehall && <li>Leg de <b>{qty('gildekaarten', 6)} gilde-insignias</b> open zichtbaar bij de gildehall-voorraad</li>}

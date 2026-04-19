@@ -351,7 +351,7 @@ export default function BoardPreview({ activeItems, printed }) {
           className="btn"
           onClick={() => setSeed(Math.floor(Math.random() * 1_000_000))}
           style={{ padding: '8px 14px', fontSize: 14 }}
-        >🎲 Shuffle</button>
+        >🎲 Schud</button>
       </div>
 
       {(plates.overflowLand > 0 || plates.overflowWater > 0) && (
@@ -561,7 +561,7 @@ function Legend({ figures, settlements, cities, roads, ships, harbors }) {
   if (figures.vuurtoren) items.push('🏛️ vuurtoren');
   return (
     <p className="tiny muted mt">
-      {items.length ? items.join(' · ') : 'Placeholder-preview. Tik 🎲 voor andere rangschikking.'}
+      {items.length ? items.join(' · ') : 'Tik 🎲 voor een andere opstelling.'}
     </p>
   );
 }

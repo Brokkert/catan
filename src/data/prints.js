@@ -19,7 +19,7 @@ export const PRINT_ITEMS = [
   { id: 'havens', name: 'Haventegels', qty: 5, size: 'overlay', color: 'mixed', desc: '5 haventegels', stl: STL_BASIS, always: true },
   { id: 'basis_land', name: 'Basisplaat — land', qty: 30, size: 'hex', color: 'neutral', desc: 'Magnetische basisplaat voor land-hexen (bruin/grijs filament)', stl: STL_BASIS, always: true },
   { id: 'basis_water', name: 'Basisplaat — water', qty: 50, size: 'hex', color: 'blue', desc: 'Magnetische basisplaat voor water-hexen (blauw filament)', stl: STL_BASIS, always: true },
-  { id: 'ontdekking_bak', name: 'Ontdekking-bak (opberg + trek)', qty: 1, size: 'large', color: 'neutral', desc: 'Dubbelfunctie: tegels opbergen én pre-geshuffled trekken. Plaats ontdekkingstegels vooraf willekeurig in de vakken — trek tijdens spel uit het volgende vak.', custom: true, rule: 'procedureel' },
+  { id: 'ontdekking_bak', name: 'Ontdekking-bak (opberg + trek)', qty: 1, size: 'large', color: 'neutral', desc: 'Doos met vakken die dubbel dient als opslag én trekbak. Leg de ontdekkingstegels vooraf in willekeurige volgorde in de vakken — tijdens spel pak je er steeds één uit het volgende vak.', custom: true, rule: 'procedureel' },
 
   // procedureel
   { id: 'jungle_hex', name: 'Jungle-hex', qty: 3, size: 'hex', color: 'mixed', desc: 'Jungletegel voor specerij', custom: true, rule: 'procedureel' },
@@ -123,7 +123,7 @@ export const PRINT_ITEMS = [
   { id: 'orakelschijven', name: 'Orakelschijven (2-12)', qty: 11, size: 'small', color: 'player', desc: '~15mm dubbelzijdig', custom: true, rule: 'orakel', perPlayer: true },
   { id: 'spion_fig', name: 'Spionnen', qty: 2, size: 'small', color: 'player', desc: '~8mm gehurkt', custom: true, rule: 'spionnen', perPlayer: true },
   { id: 'scroll_tokens', name: 'Scroll-tokens', qty: 8, size: 'small', color: 'mixed', desc: '~12mm perkament', custom: true, rule: 'contracten' },
-  { id: 'nummerkaarten', name: 'Nummer-trekschijven', qty: 36, size: 'small', color: 'mixed', desc: '36 genummerde schijfjes (2d6 combinaties). Pre-geshuffled in een trek-bak leggen; pak het volgende schijfje in plaats van dobbelen.', custom: true, rule: 'kaartstapel' },
+  { id: 'nummerkaarten', name: 'Nummer-trekschijven', qty: 36, size: 'small', color: 'mixed', desc: '36 genummerde schijfjes (alle 2d6-combinaties). Leg ze vooraf in willekeurige volgorde in een trekbak; pak steeds de volgende in plaats van te dobbelen.', custom: true, rule: 'kaartstapel' },
 
   // verzamelen
   { id: 'trof_klauw', name: 'Monsterklauw-trofeeën', qty: 8, size: 'small', color: 'neutral', desc: '~12mm', custom: true, rule: 'trofeeen' },
