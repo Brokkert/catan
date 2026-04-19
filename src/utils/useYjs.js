@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta } from './yjsSync.js';
+import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints } from './yjsSync.js';
 
 function useObserved(target, getValue) {
   const [value, setValue] = useState(getValue);
@@ -41,6 +41,45 @@ export function useYConfig() {
 export function useYMeta() {
   const meta = useObserved(yMeta, () => Object.fromEntries(yMeta.entries()));
   return meta;
+}
+
+// Print overrides — edits to predefined print items (name, qty, hidden)
+export function useYPrintOverrides() {
+  const overrides = useObserved(yPrintOverrides, () => {
+    const out = {};
+    yPrintOverrides.forEach((v, k) => { out[k] = v; });
+    return out;
+  });
+  const setOverride = useCallback((itemId, patch) => {
+    const current = yPrintOverrides.get(itemId) || {};
+    const next = { ...current, ...patch };
+    // Clean nulls — a null/undefined value means reset that field
+    Object.keys(next).forEach(k => { if (next[k] == null) delete next[k]; });
+    if (Object.keys(next).length === 0) yPrintOverrides.delete(itemId);
+    else yPrintOverrides.set(itemId, next);
+  }, []);
+  return [overrides, setOverride];
+}
+
+// Custom print items — user-added items
+export function useYCustomPrints() {
+  const items = useObserved(yCustomPrints, () => yCustomPrints.toArray());
+  const add = useCallback((item) => yCustomPrints.push([item]), []);
+  const update = useCallback((id, patch) => {
+    const list = yCustomPrints.toArray();
+    const idx = list.findIndex(i => i.id === id);
+    if (idx < 0) return;
+    const next = { ...list[idx], ...patch };
+    doc.transact(() => {
+      yCustomPrints.delete(idx, 1);
+      yCustomPrints.insert(idx, [next]);
+    });
+  }, []);
+  const remove = useCallback((id) => {
+    const idx = yCustomPrints.toArray().findIndex(i => i.id === id);
+    if (idx >= 0) yCustomPrints.delete(idx, 1);
+  }, []);
+  return [items, { add, update, remove }];
 }
 
 // Custom rules — Y.Array of rule objects

@@ -23,6 +23,8 @@ export const yCustomRules = doc.getArray('custom');  // user-added rules
 export const yPrinted = doc.getMap('printed');       // print checklist
 export const yBank = doc.getArray('bank');           // 4 player resource entries
 export const yMeta = doc.getMap('meta');             // misc: selected preset etc
+export const yPrintOverrides = doc.getMap('printOverrides'); // { itemId: { name?, qty?, hidden? } }
+export const yCustomPrints = doc.getArray('customPrints');   // user-added print items
 
 export function waitForSync(timeoutMs = 1500) {
   return new Promise(resolve => {
