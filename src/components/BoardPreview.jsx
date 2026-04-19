@@ -22,6 +22,7 @@ const HEX_TYPES = {
   vulkaan_hex: [{ type: 'vulkaan', color: '#4a1212', shade: '#2a0505', emoji: '🌋', produces: false, isVolcano: true }],
   ruine_hex: [{ type: 'ruine', color: '#5a4a3a', shade: '#2f251c', emoji: '🏛️', produces: false }],
   maalstroom_hex: [{ type: 'maalstroom', color: '#1a3a5a', shade: '#0a1f35', emoji: '🌀', produces: false, water: true }],
+  rif_hex: [{ type: 'rif', color: '#355a75', shade: '#1a3a55', emoji: '🪨', produces: false, water: true }],
   piraat_hex: [{ type: 'piraat', color: '#2a1a1a', shade: '#110808', emoji: '🏴\u200d☠️', produces: false }],
   drakenei_hex: [{ type: 'drakenei', color: '#3a1a3a', shade: '#1f0a1f', emoji: '🥚', produces: false }],
   handelspost_hex: [{ type: 'handelspost', color: '#8a6a2a', shade: '#5a4015', emoji: '⚓', produces: false }],

@@ -36,6 +36,9 @@ export const PRINT_ITEMS = [
   // maalstroom
   { id: 'maalstroom_hex', name: 'Maalstroom-hex', qty: 1, size: 'hex', color: 'blue', desc: 'Maalstroom', custom: true, rule: 'maalstroom' },
 
+  // rif
+  { id: 'rif_hex', name: 'Rif-hex (water met stenen)', qty: 2, size: 'hex', color: 'blue', desc: 'Rotsen boven water — gevaarlijk voor schepen', custom: true, rule: 'rif' },
+
   // piratenschuilplaats
   { id: 'piraat_hex', name: 'Piratenschuilplaats-hex', qty: 1, size: 'hex', color: 'mixed', desc: 'Piratenbasis', custom: true, rule: 'piratenschuilplaats' },
 
