@@ -6,19 +6,27 @@ import { useYParams } from '../utils/useYjs.js';
 const PLAYER_COLORS = ['#d33', '#4a4', '#38b', '#e8b923'];
 const PLAYER_NAMES = ['Rood', 'Groen', 'Blauw', 'Geel'];
 
-// Center desert/volcano + classic 7-hex Catan starter island
-function mainIslandTiles(cfg) {
+// Center desert/volcano + 6 random productive hexes = 7 total
+function mainIslandTiles(cfg, seed = 1) {
   const center = cfg.vulkaan
     ? { q: 0, r: 0, type: 'vulkaan' }
     : { q: 0, r: 0, type: 'woestijn' };
+  const pool = ['bos', 'bos', 'bos', 'bos', 'akkers', 'akkers', 'akkers', 'akkers',
+                'weiden', 'weiden', 'weiden', 'weiden', 'heuvels', 'heuvels', 'heuvels',
+                'bergen', 'bergen', 'bergen'];
+  // Seeded shuffle
+  let s = seed;
+  const arr = [...pool];
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = (s * 9301 + 49297) % 233280;
+    const j = Math.floor((s / 233280) * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  const ring = [[1, -1], [1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1]];
+  const nums = [11, 6, 8, 4, 3, 9];
   return [
     center,
-    { q: 1, r: -1, type: 'bos', number: 11 },
-    { q: 1, r: 0, type: 'heuvels', number: 6 },
-    { q: 0, r: 1, type: 'bergen', number: 8 },
-    { q: -1, r: 1, type: 'akkers', number: 4 },
-    { q: -1, r: 0, type: 'weiden', number: 3 },
-    { q: 0, r: -1, type: 'bos', number: 9 },
+    ...ring.map(([q, r], i) => ({ q, r, type: arr[i], number: nums[i] })),
   ];
 }
 
@@ -59,7 +67,9 @@ function startPlacements(size) {
 export default function SetupWizard({ config }) {
   const qty = usePrintableQty();
   const [params] = useYParams();
-  const steps = useMemo(() => buildSteps(config, qty, params), [config, qty, params]);
+  const [mainSeed, setMainSeed] = useState(1);
+  const reshuffle = () => setMainSeed(Math.floor(Math.random() * 1_000_000));
+  const steps = useMemo(() => buildSteps(config, qty, params, mainSeed, reshuffle), [config, qty, params, mainSeed]);
   const [step, setStep] = useState(0);
   const current = steps[step];
 
@@ -101,17 +111,20 @@ function Chips({ items }) {
   );
 }
 
-function buildSteps(cfg, qty, params) {
+function buildSteps(cfg, qty, params, mainSeed, reshuffle) {
   const steps = [];
 
   steps.push({
     title: 'Leg het hoofdeiland',
     render: () => (
       <>
-        <p>Plaats <b>{params.hoofdeiland_tegels} landtegels</b> <b>door elkaar</b> (willekeurig gemengd) in het standaard Catan-patroon. {cfg.vulkaan && <>Midden: <b>vulkaan</b> (vervangt woestijn).</>} Anders: midden = woestijn.</p>
-        <p className="small muted">Tip: pak uit iedere soort landtegel één, schud ze en leg ze neer. Zo is elke game anders.</p>
-        <p className="small muted">Voorbeeld met nummertokens:</p>
-        <HexBoard tiles={mainIslandTiles(cfg)} size={36} />
+        <p>Pak alle soorten landtegels (🌲 🌾 🐑 🧱 ⛰️) samen, schud ze goed <b>door elkaar</b>, en leg <b>{params.hoofdeiland_tegels - 1} willekeurige</b> in een ring. In het midden: <b>{cfg.vulkaan ? 'vulkaan 🌋' : 'woestijn 🏜️'}</b>.</p>
+        <p className="small muted">Iedere game een andere verhouding — sommige games krijg je 4× bos, andere geen bos. Dat maakt het spannend.</p>
+        <div className="row between mt">
+          <p className="small muted" style={{ margin: 0 }}>Voorbeeld mogelijke opstelling:</p>
+          <button className="btn-secondary" onClick={reshuffle} style={{ padding: '6px 12px', fontSize: 12 }}>🎲 Ververs</button>
+        </div>
+        <HexBoard tiles={mainIslandTiles(cfg, mainSeed)} size={36} />
       </>
     ),
   });
@@ -135,7 +148,7 @@ function buildSteps(cfg, qty, params) {
       title: 'Vul de Ontdekking-bak',
       render: () => (
         <>
-          <p>Leg alle ontdekkingstegels <b>in willekeurige volgorde in de Ontdekking-bak</b>. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke eraan komt. Tel bij elkaar wat erin moet:</p>
+          <p>Alle overige tegels (uit álle soorten) gaan <b>door elkaar</b> in de Ontdekking-bak — gewoon in één hoop schudden en willekeurig over de vakken verdelen. Tijdens het spel pak je steeds de volgende tegel uit het eerstvolgende vak — niemand weet welke soort eraan komt. Reference totaal per type:</p>
           <ul>
             <li>Overige watertegels (= <b>{Math.max(0, qty('water_hex') - params.waterring_tegels)}</b>, water-prints minus de {params.waterring_tegels} van de ring)</li>
             {cfg.specerij && <li>🌴 Jungle: <b>{qty('jungle_hex', 3)}</b></li>}
