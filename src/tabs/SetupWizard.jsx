@@ -231,36 +231,38 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle, activeItems, printed)
 
   steps.push({
     title: 'Plaats havens',
-    render: () => (
-      <>
-        <p>Plaats <b>{params.havens} haven{params.havens === 1 ? '' : 's'}</b> aan de rand van het hoofdeiland, tegen water aan:</p>
-        <ul className="small">
-          <li>2× Generiek (3:1 alles)</li>
-          <li>1× Hout (2:1)</li>
-          <li>1× Baksteen (2:1)</li>
-          <li>1× Graan (2:1)</li>
-        </ul>
-        {/* Small demo with havens as triangles on coast corners */}
-        <HexBoard tiles={mainPlusWater(cfg, mainSeed)} size={22} extra={(() => {
-          const haven = [
-            { q: 1, r: -2, label: '3:1' },
-            { q: -2, r: 1, label: '3:1' },
-            { q: 2, r: 0, label: '🪵' },
-            { q: 0, r: 2, label: '🧱' },
-            { q: -1, r: -1, label: '🌾' },
-          ];
-          return haven.slice(0, params.havens).map((h, i) => {
+    render: () => {
+      const allHavens = [
+        { q: 1, r: -2, emoji: '3:1', name: 'Generieke haven', ratio: 'alles 3:1' },
+        { q: -2, r: 1, emoji: '3:1', name: 'Generieke haven', ratio: 'alles 3:1' },
+        { q: 2, r: 0, emoji: '🪵', name: 'Houthaven', ratio: 'hout 2:1' },
+        { q: 0, r: 2, emoji: '🧱', name: 'Baksteenhaven', ratio: 'baksteen 2:1' },
+        { q: -1, r: -1, emoji: '🌾', name: 'Graanhaven', ratio: 'graan 2:1' },
+        { q: 2, r: -1, emoji: '🐑', name: 'Wolhaven', ratio: 'wol 2:1' },
+        { q: -1, r: 2, emoji: '⛰️', name: 'Ertshaven', ratio: 'erts 2:1' },
+      ];
+      const selected = allHavens.slice(0, params.havens);
+      return (
+        <>
+          <p>Plaats <b>{params.havens} haven{params.havens === 1 ? '' : 's'}</b> aan de rand van het hoofdeiland, telkens tegen een watertegel aan:</p>
+          <ul className="small">
+            {selected.map((h, i) => (
+              <li key={i}>{h.emoji} <b>{h.name}</b> — {h.ratio}</li>
+            ))}
+          </ul>
+          <p className="small muted">Generieke havens wissel je alles aan 3:1 (3 grondstof → 1 naar keuze). Resource-havens zijn 2:1 maar alleen in die grondstof.</p>
+          <HexBoard tiles={mainPlusWater(cfg, mainSeed)} size={22} extra={selected.map((h, i) => {
             const [x, y] = axialToPixel(h.q, h.r, 22);
             return (
               <g key={`hv${i}`} transform={`translate(${x}, ${y})`}>
                 <circle r="7" fill="#8a5a2a" stroke="#1a1008" strokeWidth="1" />
-                <text textAnchor="middle" fontSize="8" y="3" fill="#fff">{h.label}</text>
+                <text textAnchor="middle" fontSize="8" y="3" fill="#fff">{h.emoji}</text>
               </g>
             );
-          });
-        })()} />
-      </>
-    ),
+          })} />
+        </>
+      );
+    },
   });
 
   steps.push({
