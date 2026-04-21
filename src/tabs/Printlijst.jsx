@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { PRINT_ITEMS, SIZE_WEIGHT, COLOR_LABEL } from '../data/prints.js';
 import { useYPrinted, useYPrintOverrides, useYCustomPrints } from '../utils/useYjs.js';
 import Modal from '../components/Modal.jsx';
@@ -264,14 +264,28 @@ function PrintRow({ item, perPlayer, printed, printedActions, editMode, setOverr
 
 function EditRow({ item, setOverride, customActions }) {
   const isCustomAdded = item.isCustomAdded;
-  function handleName(val) {
-    if (isCustomAdded) customActions.update(item.id, { name: val });
-    else setOverride(item.id, { name: val });
+  const [nameText, setNameText] = useState(item.name);
+  const [qtyText, setQtyText] = useState(String(item.qty));
+
+  useEffect(() => { setNameText(item.name); }, [item.name]);
+  useEffect(() => { setQtyText(String(item.qty)); }, [item.qty]);
+
+  function commitName(val) {
+    const trimmed = val.trim();
+    if (!trimmed) return;
+    if (isCustomAdded) customActions.update(item.id, { name: trimmed });
+    else setOverride(item.id, { name: trimmed });
   }
-  function handleQty(val) {
-    const n = parseInt(val) || 0;
+  function commitQty(n) {
+    if (!Number.isFinite(n) || n < 0) return;
     if (isCustomAdded) customActions.update(item.id, { qty: n });
     else setOverride(item.id, { qty: n });
+  }
+  function bump(delta) {
+    const current = Number.isFinite(parseInt(qtyText)) ? parseInt(qtyText) : item.qty;
+    const next = Math.max(0, current + delta);
+    setQtyText(String(next));
+    commitQty(next);
   }
   function handleDelete() {
     if (isCustomAdded) customActions.remove(item.id);
@@ -280,14 +294,31 @@ function EditRow({ item, setOverride, customActions }) {
   function handleRestore() {
     setOverride(item.id, { name: null, qty: null, hidden: null });
   }
+
   return (
     <div className="col">
-      <input className="input" value={item.name} onChange={e => handleName(e.target.value)} />
-      <div className="row" style={{ gap: 6 }}>
-        <input className="input" type="number" min={0} value={item.qty}
-          onChange={e => handleQty(e.target.value)} style={{ width: 90 }} />
+      <input className="input" value={nameText}
+        onChange={e => setNameText(e.target.value)}
+        onBlur={e => commitName(e.target.value)} />
+      <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+        <button className="plusminus" onClick={() => bump(-1)}>−</button>
+        <input className="input" type="number" inputMode="numeric" min={0}
+          value={qtyText}
+          onChange={e => {
+            setQtyText(e.target.value);
+            if (e.target.value === '') return;
+            const n = parseInt(e.target.value);
+            if (Number.isFinite(n)) commitQty(n);
+          }}
+          onBlur={e => {
+            if (e.target.value === '') {
+              setQtyText(String(item.qty));
+            }
+          }}
+          style={{ width: 70, textAlign: 'center' }} />
+        <button className="plusminus" onClick={() => bump(1)}>+</button>
         <span className="small muted" style={{ alignSelf: 'center' }}>
-          {item.size}{item.perPlayer ? ' · ×4 spelers' : ''}
+          {item.size}{item.perPlayer ? ' · ×4' : ''}
         </span>
         <div className="grow" />
         {isCustomAdded ? (
