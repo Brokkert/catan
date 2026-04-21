@@ -8,6 +8,7 @@ import Printlijst from './tabs/Printlijst.jsx';
 import SetupWizard from './tabs/SetupWizard.jsx';
 import Speelhulp from './tabs/Speelhulp.jsx';
 import Spelregels from './tabs/Spelregels.jsx';
+import SyncStatus from './components/SyncStatus.jsx';
 
 const TABS = [
   { id: 'cfg', label: 'Config', icon: '⚙️' },
@@ -64,6 +65,7 @@ export default function App() {
         <div className="app-subtitle">
           <span>⏱️ ~{mins} min</span>
           <span>{'⭐'.repeat(stars)}</span>
+          <SyncStatus />
         </div>
       </header>
 

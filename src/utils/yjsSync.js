@@ -11,9 +11,9 @@ export const localPersistence = new IndexeddbPersistence('catan-shared-v1', doc)
 // WebRTC p2p sync — everyone in the same room sees live changes
 export const webrtcProvider = new WebrtcProvider('catan-shared-v1', doc, {
   signaling: [
+    'wss://y-webrtc-signaling.fly.dev',
     'wss://signaling.yjs.dev',
-    'wss://y-webrtc-signaling-eu.herokuapp.com',
-    'wss://y-webrtc-signaling-us.herokuapp.com',
+    'wss://demos.yjs.dev',
   ],
 });
 
