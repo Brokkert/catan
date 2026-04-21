@@ -1,22 +1,29 @@
 import { useEffect, useState } from 'react';
-import { webrtcProvider } from '../utils/yjsSync.js';
+import { webrtcProvider, wsProvider } from '../utils/yjsSync.js';
 
 export default function SyncStatus() {
   const [peers, setPeers] = useState(0);
-  const [connected, setConnected] = useState(false);
+  const [wsConnected, setWsConnected] = useState(false);
 
   useEffect(() => {
     const update = () => {
       setPeers(webrtcProvider.room?.webrtcConns?.size || 0);
-      setConnected((webrtcProvider.room?.provider?.connected) || (webrtcProvider.connected) || false);
+      setWsConnected(wsProvider.wsconnected);
     };
     const iv = setInterval(update, 1500);
     update();
-    return () => clearInterval(iv);
+    wsProvider.on('status', update);
+    return () => {
+      clearInterval(iv);
+      wsProvider.off('status', update);
+    };
   }, []);
 
-  const color = peers > 0 ? 'var(--green)' : 'var(--muted)';
-  const label = peers > 0 ? `${peers} verbonden` : 'zoekt verbinding…';
+  const serverOk = wsConnected;
+  const color = serverOk ? 'var(--green)' : (peers > 0 ? '#b88e1a' : 'var(--muted)');
+  const label = serverOk
+    ? (peers > 0 ? `☁️+${peers}` : '☁️ online')
+    : (peers > 0 ? `${peers} peers` : 'verbinden…');
 
   return (
     <span style={{
@@ -31,7 +38,7 @@ export default function SyncStatus() {
         height: 8,
         borderRadius: '50%',
         background: color,
-        boxShadow: peers > 0 ? `0 0 6px ${color}` : 'none',
+        boxShadow: serverOk ? `0 0 6px ${color}` : 'none',
       }} />
       {label}
     </span>
