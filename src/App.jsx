@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { DEFAULT_CONFIG, ALL_RULES } from './data/rules.js';
 import { gameName, estimateMinutes, difficultyStars, urlToCfg } from './utils/game.js';
 import { yConfig, yCustomRules, doc, waitForSync } from './utils/yjsSync.js';
+import { initSupabaseSync } from './utils/supabaseSync.js';
 import { useYConfig, useYCustomRules } from './utils/useYjs.js';
 import Configurator from './tabs/Configurator.jsx';
 import Printlijst from './tabs/Printlijst.jsx';
@@ -27,6 +28,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       await waitForSync();
+      await initSupabaseSync();
       const params = new URLSearchParams(window.location.search);
       const fromURL = params.get('rules');
       doc.transact(() => {

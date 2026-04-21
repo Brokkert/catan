@@ -1,6 +1,5 @@
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
-import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from 'y-indexeddb';
 
 // Single shared doc — all users of the same URL see the same state.
@@ -18,15 +17,6 @@ export const webrtcProvider = new WebrtcProvider('catan-shared-v1', doc, {
   ],
 });
 
-// Websocket server — keeps state on a public server so that a device
-// that comes online later sees earlier changes even if no other peer
-// is currently online. Public demo server — fine for hobby use.
-export const wsProvider = new WebsocketProvider(
-  'wss://demos.yjs.dev/ws',
-  'catan-brokkert-shared-v1',
-  doc,
-  { connect: true }
-);
 
 // Shared state buckets
 export const yConfig = doc.getMap('config');         // rule toggles
