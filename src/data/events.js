@@ -20,4 +20,5 @@ export const EVENTS = [
   { id: 'e_vangst', title: 'Rijke vangst', desc: 'Alle vissersbootjes produceren +1 vis.', requires: 'vissersboot' },
   { id: 'e_aardbeving', title: 'Aardbeving', desc: '1 willekeurige palissade/dijk wordt vernietigd.', requires: 'palissade' },
   { id: 'e_verkenners', title: 'Verkennersmoed', desc: 'Oorlogsschepen trekken 3 tegels i.p.v. 2 deze ronde.', requires: 'oorlogsschip' },
+  { id: 'e_banditenraid', title: 'Bandietenraid', desc: 'Extra bandiet spawnt op woestijn (bovenop de normale spawn).', requires: 'bandieten' },
 ];

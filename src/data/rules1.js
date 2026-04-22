@@ -33,6 +33,7 @@ export const RULES_1 = [
   { id: 'monsters', cat: 'dreiging', name: 'Monsters op buiteneilanden', desc: 'Bij ontdekking landtegel: symbool op achterkant bepaalt of er een monster staat (deterministic, geen dobbelsteen).', def: true },
   { id: 'monsterspawn', cat: 'dreiging', name: 'Monsterspawns', desc: 'Elke 3e seizoenswisseling verschijnt nieuw monster op willekeurige onbewoonde tegel.', def: true },
   { id: 'draak', cat: 'dreiging', name: 'De Draak (eindgame-boss)', desc: 'Kracht 8. Elke seizoenswisseling vliegt naar willekeurige tegel en vernietigt gebouwen. Coalitie mogelijk om te verslaan.', def: true },
+  { id: 'bandieten', cat: 'dreiging', name: 'Bandietenkamp (woestijn)', desc: 'Bij seizoenswissel spawnt een bandiet op de woestijn, mits rover er niet staat. Steelt 1 grondstof van aangrenzende speler per ronde. Kracht 2. Versla voor 1🪙 + bandiet-trofee. Rover op woestijn houdt ze weg; bij rover erop vluchten ze en laten 1🪙 schat achter.', def: true },
 
   // SURVIVAL
   { id: 'voedsel', cat: 'survival', name: 'Voedsel/hongersnood', desc: 'Elke seizoenswisseling: betaal 1 graan of vis per 3 zielen. Tekort = dorpen verlaten, steden degraderen.', def: true },
