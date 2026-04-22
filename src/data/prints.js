@@ -6,6 +6,15 @@ const STL_BASIS = 'https://www.thingiverse.com/thing:2525047';
 const STL_NUMMER = 'https://www.printables.com/model/292185';
 const STL_SEAFARERS = 'https://www.thingiverse.com/thing:3072272';
 const STL_CK = 'https://www.thingiverse.com/thing:2865138';
+const STL_RESOURCES = 'https://www.printables.com/model/591760-catan-resources';
+const STL_FISH = 'https://www.thingiverse.com/thing:6682395';
+const STL_SPICE = 'https://www.myminifactory.com/object/3d-print-cauldron-spice-jar-190722';
+const STL_GOLD = 'https://www.printables.com/model/593486-gold-coins';
+const STL_DEVCARDS = 'https://www.printables.com/model/660356-catan-development-cards';
+const STL_TRAY = 'https://www.printables.com/model/136958-catan-individual-player-trays';
+const STL_WAGON = 'https://www.printables.com/model/1449299-28mm-covered-wagon-western-frontier-terrain-model';
+const STL_ROBBER = 'https://www.printables.com/model/178355-catan-robber';
+const STL_PIRATE_SHIP = 'https://www.printables.com/model/145481-catan-seafairers-pirate-ship-no-seafoam-so-sails-c';
 
 export const PRINT_ITEMS = [
   // Always needed (basisspel) — land hex types per soort
@@ -20,7 +29,7 @@ export const PRINT_ITEMS = [
   { id: 'dorpen', name: 'Dorpen', qty: 5, size: 'medium', color: 'player', desc: '5 dorpen per speler', stl: STL_BASIS, always: true, perPlayer: true },
   { id: 'steden', name: 'Steden', qty: 4, size: 'medium', color: 'player', desc: '4 steden per speler', stl: STL_BASIS, always: true, perPlayer: true },
   { id: 'wegen', name: 'Wegen', qty: 15, size: 'small', color: 'player', desc: '15 wegen per speler', stl: STL_BASIS, always: true, perPlayer: true },
-  { id: 'rover', name: 'Rover', qty: 1, size: 'medium', color: 'neutral', desc: 'Roverfiguur', stl: STL_BASIS, always: true },
+  { id: 'rover', name: 'Rover', qty: 1, size: 'medium', color: 'neutral', desc: 'Roverfiguur', stl: STL_ROBBER, always: true },
   { id: 'havens', name: 'Haventegels', qty: 5, size: 'overlay', color: 'mixed', desc: '5 haventegels', stl: STL_BASIS, always: true },
   { id: 'basis_land', name: 'Basisplaat — land', qty: 30, size: 'hex', color: 'neutral', desc: 'Magnetische basisplaat voor land-hexen (bruin/grijs filament)', stl: STL_BASIS, always: true },
   { id: 'basis_water', name: 'Basisplaat — water', qty: 50, size: 'hex', color: 'blue', desc: 'Magnetische basisplaat voor water-hexen (blauw filament)', stl: STL_BASIS, always: true },
@@ -58,7 +67,7 @@ export const PRINT_ITEMS = [
   { id: 'goudmijn_hex', name: 'Goudmijn-hex', qty: 1, size: 'hex', color: 'gold', desc: 'Goudmijn-tegel', custom: true, rule: 'goudmijn' },
 
   // goud
-  { id: 'goudmunten', name: 'Goudmunten', qty: 40, size: 'small', color: 'gold', desc: '~12mm ø, 2mm dik', custom: true, rule: 'goud' },
+  { id: 'goudmunten', name: 'Goudmunten', qty: 40, size: 'small', color: 'gold', desc: '~12mm ø, 2mm dik', stl: STL_GOLD, rule: 'goud' },
 
   // goudrivier
   { id: 'goudrivier_hex', name: 'Goudrivier-hex', qty: 1, size: 'hex', color: 'gold', desc: 'Wildcard grondstof', stl: STL_SEAFARERS, rule: 'goudrivier' },
@@ -98,8 +107,11 @@ export const PRINT_ITEMS = [
   { id: 'bandiet_trofee', name: 'Bandiet-trofee', qty: 6, size: 'small', color: 'neutral', desc: '~12mm (bandietenmasker). Verzamel door bandieten te verslaan.', custom: true, rule: 'bandieten' },
 
   // vrijbuiters
-  { id: 'vrijbuiter_schip', name: 'Vrijbuiter-schip', qty: 3, size: 'medium', color: 'neutral', desc: '~18mm donkergrijs schip met vrijbuiter-vlag (onderscheid van piraat)', custom: true, rule: 'vrijbuiters' },
+  { id: 'vrijbuiter_schip', name: 'Vrijbuiter-schip', qty: 3, size: 'medium', color: 'neutral', desc: '~18mm donkergrijs schip met vrijbuiter-vlag (onderscheid van piraat)', stl: STL_PIRATE_SHIP, rule: 'vrijbuiters' },
   { id: 'vrijbuiter_trofee', name: 'Vrijbuiter-trofee', qty: 6, size: 'small', color: 'neutral', desc: '~12mm doodshoofd-op-vlag. Verzamel door vrijbuiters te verslaan.', custom: true, rule: 'vrijbuiters' },
+
+  // karavaan (land-transport)
+  { id: 'karavaan_fig', name: 'Karavaan / covered wagon', qty: 2, size: 'medium', color: 'player', desc: 'Huifkar voor land-cargo-transport over wegen', stl: STL_WAGON, rule: 'karavaan', perPlayer: true },
 
   // seizoensrad
   { id: 'seizoensrad_fig', name: 'Seizoensrad + wijzer', qty: 1, size: 'large', color: 'mixed', desc: '~60mm ø draaibaar', custom: true, rule: 'seizoensrad' },
@@ -174,9 +186,11 @@ export const PRINT_ITEMS = [
   { id: 'marktbord_fig', name: 'Marktbord', qty: 1, size: 'medium', color: 'mixed', desc: 'Plateau met 3 vakjes', custom: true, rule: 'marktbord' },
 
   // kaarten
-  { id: 'vis_kaarten', name: 'Vis-tokens', qty: 19, size: 'small', color: 'mixed', desc: '3D visjes (~15mm). Vervangen de grondstofkaart.', custom: true, rule: 'vis' },
-  { id: 'specerij_kaarten', name: 'Specerij-potjes', qty: 14, size: 'small', color: 'mixed', desc: '3D kruidenpotjes (~12mm). Vervangen de grondstofkaart.', custom: true, rule: 'specerij' },
-  { id: 'ontwik_tokens', name: 'Ontwikkelings-scrolls', qty: 32, size: 'small', color: 'mixed', desc: '3D opgerolde scrolls met symbool per type (ridder, uitvinding, monopolie, wegen, VP). 25 basis + 7 extra kaarten-vervanging.', custom: true, always: true },
+  { id: 'vis_kaarten', name: 'Vis-tokens', qty: 19, size: 'small', color: 'mixed', desc: '3D visjes (~15mm). Vervangen de grondstofkaart.', stl: STL_FISH, rule: 'vis' },
+  { id: 'specerij_kaarten', name: 'Specerij-potjes', qty: 14, size: 'small', color: 'mixed', desc: '3D kruidenpotjes (~12mm). Vervangen de grondstofkaart.', stl: STL_SPICE, rule: 'specerij' },
+  { id: 'ontwik_tokens', name: 'Ontwikkelings-scrolls', qty: 32, size: 'small', color: 'mixed', desc: '3D opgerolde scrolls met symbool per type (ridder, uitvinding, monopolie, wegen, VP). 25 basis + 7 extra kaarten-vervanging.', stl: STL_DEVCARDS, always: true },
+  { id: 'resource_tokens', name: 'Grondstof-tokens (hout/baksteen/graan/wol/erts)', qty: 80, size: 'small', color: 'mixed', desc: '3D mini-items per grondstof (stapel logs, bakstenen, graanbundels, schaapjes, ertsbrokken) — ~10-15mm. Leg op karavaan/schip voor cargo.', stl: STL_RESOURCES, always: true },
+  { id: 'speler_tray', name: 'Speler-bakje (hand-organiser)', qty: 1, size: 'large', color: 'player', desc: '3D bakje met vakken per grondstof — elke speler heeft eigen bakje om tokens in te bewaren', stl: STL_TRAY, always: true, perPlayer: true },
 ];
 
 export const SIZE_WEIGHT = { hex: 15, overlay: 8, large: 8, medium: 3, small: 1 };

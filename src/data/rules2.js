@@ -29,4 +29,6 @@ export const RULES_2 = [
   { id: 'orakel', cat: 'skill', name: 'Orakelsysteem', desc: 'Elke beurt geheim getal leggen. Goed = bonus. Fout = informatielek + bluf.', def: true },
   { id: 'spionnen', cat: 'skill', name: 'Spionnen', desc: 'Geheim bij tegenstander. Stiekem grondstoffen mee. Ontdekbaar via ridder. 1⛰️1🐟. Max 2.', def: true },
   { id: 'contracten', cat: 'skill', name: 'Handelscontracten', desc: 'Scroll-token. 3 rondes 1:1 ruil. Verbreken = boete.', def: true },
+  { id: 'cargo', cat: 'skill', name: 'Cargo (schip-transport)', desc: 'Handelsschepen mogen tot 2 grondstoffen dragen (oorlogsschip 3). Laden in eigen haven of dorp aan kust, lossen in haven/markt van andere speler voor verkoop (1:1 goud) of handel. Vrijbuiters/piraten kunnen cargo kapen bij succesvol gevecht.', def: false },
+  { id: 'karavaan', cat: 'skill', name: 'Karavaan (land-transport)', desc: 'Gebruik een karavaan-token om cargo over je eigen wegen te verplaatsen (2 stappen/beurt). Bij aankomst in markt/tempel/handelspost: verkoop voor 1🪙 per grondstof óf offer voor gunst. Bandieten kunnen de karavaan overvallen. Voor specialist-hexen (goudmijn/goudrivier/oase) zonder eigen dorp: karavaan oogst 1 grondstof per ronde.', def: false },
 ];
