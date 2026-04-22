@@ -34,6 +34,7 @@ export const RULES_1 = [
   { id: 'monsterspawn', cat: 'dreiging', name: 'Monsterspawns', desc: 'Elke 3e seizoenswisseling verschijnt nieuw monster op willekeurige onbewoonde tegel.', def: true },
   { id: 'draak', cat: 'dreiging', name: 'De Draak (eindgame-boss)', desc: 'Kracht 8. Elke seizoenswisseling vliegt naar willekeurige tegel en vernietigt gebouwen. Coalitie mogelijk om te verslaan.', def: true },
   { id: 'bandieten', cat: 'dreiging', name: 'Bandietenkamp (woestijn)', desc: 'Bij seizoenswissel spawnt een bandiet op de woestijn, mits rover er niet staat. Steelt 1 grondstof van aangrenzende speler per ronde. Kracht 2. Versla voor 1🪙 + bandiet-trofee. Rover op woestijn houdt ze weg; bij rover erop vluchten ze en laten 1🪙 schat achter.', def: true },
+  { id: 'vrijbuiters', cat: 'dreiging', name: 'Vrijbuiters (zee)', desc: 'Bij seizoenswissel spawnt een vrijbuiter-schip op willekeurige onbewoonde watertegel. Blokkeert schepen, steelt 1 vis van aangrenzende vissersboot per ronde. Kracht 2. Versla met oorlogsschip voor 1🪙 + vrijbuiter-trofee.', def: true },
 
   // SURVIVAL
   { id: 'voedsel', cat: 'survival', name: 'Voedsel/hongersnood', desc: 'Elke seizoenswisseling: betaal 1 graan of vis per 3 zielen. Tekort = dorpen verlaten, steden degraderen.', def: true },

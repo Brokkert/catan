@@ -97,6 +97,10 @@ export const PRINT_ITEMS = [
   { id: 'bandiet_fig', name: 'Bandiet figuur', qty: 3, size: 'medium', color: 'neutral', desc: '~15mm figuur met dolk/boef-look, kampt op woestijn', custom: true, rule: 'bandieten' },
   { id: 'bandiet_trofee', name: 'Bandiet-trofee', qty: 6, size: 'small', color: 'neutral', desc: '~12mm (bandietenmasker). Verzamel door bandieten te verslaan.', custom: true, rule: 'bandieten' },
 
+  // vrijbuiters
+  { id: 'vrijbuiter_schip', name: 'Vrijbuiter-schip', qty: 3, size: 'medium', color: 'neutral', desc: '~18mm donkergrijs schip met vrijbuiter-vlag (onderscheid van piraat)', custom: true, rule: 'vrijbuiters' },
+  { id: 'vrijbuiter_trofee', name: 'Vrijbuiter-trofee', qty: 6, size: 'small', color: 'neutral', desc: '~12mm doodshoofd-op-vlag. Verzamel door vrijbuiters te verslaan.', custom: true, rule: 'vrijbuiters' },
+
   // seizoensrad
   { id: 'seizoensrad_fig', name: 'Seizoensrad + wijzer', qty: 1, size: 'large', color: 'mixed', desc: '~60mm ø draaibaar', custom: true, rule: 'seizoensrad' },
 

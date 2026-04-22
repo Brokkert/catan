@@ -21,4 +21,5 @@ export const EVENTS = [
   { id: 'e_aardbeving', title: 'Aardbeving', desc: '1 willekeurige palissade/dijk wordt vernietigd.', requires: 'palissade' },
   { id: 'e_verkenners', title: 'Verkennersmoed', desc: 'Oorlogsschepen trekken 3 tegels i.p.v. 2 deze ronde.', requires: 'oorlogsschip' },
   { id: 'e_banditenraid', title: 'Bandietenraid', desc: 'Extra bandiet spawnt op woestijn (bovenop de normale spawn).', requires: 'bandieten' },
+  { id: 'e_vrijbuiterraid', title: 'Vrijbuiterraid', desc: 'Extra vrijbuiter-schip spawnt op willekeurige watertegel.', requires: 'vrijbuiters' },
 ];

@@ -2,7 +2,7 @@
 export const RULES_4 = [
   // VERZAMELEN
   { id: 'trofeeen', cat: 'verzamelen', name: 'Trofeeën', desc: '5 types: monsterklauw, piratenvlag, oorlogsbuit, zeemonsterschub, drakentand.', def: true },
-  { id: 'trofeesets', cat: 'verzamelen', name: 'Trofee-sets', desc: 'Monsterjager (1VP), Piratendoder (1VP), Zeeheld (2VP), Drakendoder (3VP), Verzamelaar (3VP).', def: true },
+  { id: 'trofeesets', cat: 'verzamelen', name: 'Trofee-sets', desc: 'Monsterjager (1VP), Piratendoder (1VP), Zeeheld (2VP), Drakendoder (3VP), Verzamelaar (3VP), Wetshandhaver (2VP, 3× bandiet + 3× vrijbuiter).', def: true },
   { id: 'schatkaarten', cat: 'verzamelen', name: 'Schatkaartfragmenten', desc: '6 stuks. 2=info, 4=haven, 6=Verloren Schat (3VP+5 grondstoffen).', def: true },
   { id: 'relieken', cat: 'verzamelen', name: 'Relieken (6 uniek)', desc: 'Drietand (2VP), Aambeeld, Kompas, Kroon, Kelk, Masker.', def: true },
 
