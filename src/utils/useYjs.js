@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints, yParams, yTileDraws } from './yjsSync.js';
+import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints, yParams, yTileDraws, yBoard, yDrawHistory } from './yjsSync.js';
 
 export const DEFAULT_PARAMS = {
   hoofdeiland_tegels: 7,
@@ -99,6 +99,28 @@ export function useYParams() {
     doc.transact(() => { yParams.clear(); });
   }, []);
   return [params, { setParam, resetParams }];
+}
+
+// Live board — Y.Map with key "q,r" → tile object
+export function useYBoard() {
+  const board = useObserved(yBoard, () => Object.fromEntries(yBoard.entries()));
+  const setTile = useCallback((q, r, tile) => {
+    yBoard.set(`${q},${r}`, tile);
+  }, []);
+  const removeTile = useCallback((q, r) => yBoard.delete(`${q},${r}`), []);
+  const reset = useCallback(() => { doc.transact(() => yBoard.clear()); }, []);
+  const getTile = useCallback((q, r) => board[`${q},${r}`], [board]);
+  return [board, { setTile, removeTile, reset, getTile }];
+}
+
+// Draw history (chronological)
+export function useYDrawHistory() {
+  const history = useObserved(yDrawHistory, () => yDrawHistory.toArray());
+  const append = useCallback((entry) => yDrawHistory.push([entry]), []);
+  const reset = useCallback(() => {
+    doc.transact(() => yDrawHistory.delete(0, yDrawHistory.length));
+  }, []);
+  return [history, { append, reset }];
 }
 
 // Tile draws — { itemId: count_drawn }

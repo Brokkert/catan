@@ -28,6 +28,8 @@ export const yPrintOverrides = doc.getMap('printOverrides'); // { itemId: { name
 export const yCustomPrints = doc.getArray('customPrints');   // user-added print items
 export const yParams = doc.getMap('params');                 // tweakable game-rule numbers
 export const yTileDraws = doc.getMap('tileDraws');           // { itemId: count_drawn }
+export const yBoard = doc.getMap('board');                   // { "q,r": {type, number?, owner?, etc} }
+export const yDrawHistory = doc.getArray('drawHistory');     // [{ q, r, type, ts, player? }]
 
 export function waitForSync(timeoutMs = 1500) {
   return new Promise(resolve => {

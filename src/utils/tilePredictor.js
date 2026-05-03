@@ -76,10 +76,59 @@ function applyWeights(pool, neighbors) {
   });
 }
 
-export function predictTile(qty, draws, config, neighbors) {
+// Smart context-aware predictor.
+// history = [{type, ts, q, r}], drawCount = total draws so far
+function applySmartWeights(pool, neighbors, history = [], totalPool = 0) {
+  let weighted = applyWeights(pool, neighbors);
+  const totalDraws = history.length;
+
+  // PITY: if last 3 draws all water → boost land x1.6, vice versa
+  const last3 = history.slice(-3).map(h => h.type);
+  if (last3.length === 3) {
+    const allWater = last3.every(t => ['water', 'koraal', 'rif'].includes(t));
+    const allLand = last3.every(t => !['water', 'koraal', 'rif'].includes(t));
+    if (allWater) {
+      weighted = weighted.map(t => ({ ...t, weight: t.weight * (t.kind === 'land' ? 1.7 : 0.6) }));
+    } else if (allLand) {
+      weighted = weighted.map(t => ({ ...t, weight: t.weight * (t.kind === 'water' ? 1.7 : 0.7) }));
+    }
+  }
+
+  // DRAMA-CURVE: based on % of pool consumed
+  const consumed = totalPool > 0 ? totalDraws / totalPool : 0;
+  const exotic = ['drakenei', 'goudmijn', 'goudrivier', 'ruine', 'vulkaan', 'piraat', 'handelspost'];
+  const safe = ['water', 'bos', 'akkers'];
+  if (consumed < 0.25) {
+    // early: boost safe, dampen exotic
+    weighted = weighted.map(t => ({
+      ...t,
+      weight: t.weight * (safe.includes(t.sub) ? 1.3 : exotic.includes(t.sub) ? 0.4 : 1),
+    }));
+  } else if (consumed > 0.6) {
+    // late: boost exotic, fewer plain water
+    weighted = weighted.map(t => ({
+      ...t,
+      weight: t.weight * (exotic.includes(t.sub) ? 1.8 : t.sub === 'water' ? 0.7 : 1),
+    }));
+  }
+
+  // GUARANTEED-RARE: every 5th draw boost a rare type that hasn't appeared yet
+  if (totalDraws > 0 && totalDraws % 5 === 0) {
+    const seen = new Set(history.map(h => h.type));
+    weighted = weighted.map(t => ({
+      ...t,
+      weight: t.weight * (exotic.includes(t.sub) && !seen.has(t.sub) ? 3 : 1),
+    }));
+  }
+
+  return weighted;
+}
+
+export function predictTile(qty, draws, config, neighbors, history = []) {
   const pool = buildPool(qty, draws, config);
   if (pool.length === 0) return null;
-  const weighted = applyWeights(pool, neighbors);
+  const totalPool = pool.reduce((s, t) => s + t.remaining, 0) + history.length;
+  const weighted = applySmartWeights(pool, neighbors, history, totalPool);
   const total = weighted.reduce((s, t) => s + t.weight, 0);
   let r = Math.random() * total;
   for (const t of weighted) {

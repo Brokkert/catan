@@ -9,12 +9,14 @@ import Printlijst from './tabs/Printlijst.jsx';
 import SetupWizard from './tabs/SetupWizard.jsx';
 import Speelhulp from './tabs/Speelhulp.jsx';
 import Spelregels from './tabs/Spelregels.jsx';
+import Bord from './tabs/Bord.jsx';
 import SyncStatus from './components/SyncStatus.jsx';
 
 const TABS = [
   { id: 'cfg', label: 'Config', icon: '⚙️' },
   { id: 'print', label: 'Prints', icon: '🖨️' },
   { id: 'setup', label: 'Start', icon: '🎲' },
+  { id: 'bord', label: 'Bord', icon: '🗺️' },
   { id: 'play', label: 'Speelhulp', icon: '🎮' },
   { id: 'rules', label: 'Regels', icon: '📜' },
 ];
@@ -82,6 +84,7 @@ export default function App() {
         )}
         {tab === 'print' && <Printlijst config={config} />}
         {tab === 'setup' && <SetupWizard config={config} />}
+        {tab === 'bord' && <Bord config={config} />}
         {tab === 'play' && <Speelhulp config={config} />}
         {tab === 'rules' && <Spelregels config={config} customRules={customRules} name={name} />}
       </main>
