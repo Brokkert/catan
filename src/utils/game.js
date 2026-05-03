@@ -28,7 +28,7 @@ export function gameName(cfg) {
   else if (cfg.getijden && cfg.voedsel) base = 'CATANIA: Bloed & Getijden';
   else if (a.gevecht && cfg.eilanddominantie) base = 'CATANIA: De Veroveraar';
 
-  return twoPlayer ? base + ' · Duel' : base;
+  return (twoPlayer && !allOn) ? base + ' · Duel' : base;
 }
 
 const TIME_PER_CAT = {
