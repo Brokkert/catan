@@ -19,14 +19,14 @@ export function gameName(cfg) {
   const a = activeCategories(cfg);
   const twoPlayer = cfg.barbaar_npc || cfg.marktbord || cfg.snellere_getijden || cfg.lagere_vp;
 
-  let base = 'CATAN: Onontdekt';
+  let base = 'CATANIA: Onontdekt';
   const allOn = ALL_RULES.every(r => cfg[r.id]);
-  if (allOn) base = 'CATAN: De Archipel — Complete Editie';
-  else if (a.mythologie) base = 'CATAN: Goden & Glorie';
-  else if (a.items && a.verzamelen) base = 'CATAN: De Archipel';
-  else if (a.dreiging && cfg.draak && cfg.monsters) base = 'CATAN: Monsters & Getijden';
-  else if (cfg.getijden && cfg.voedsel) base = 'CATAN: Bloed & Getijden';
-  else if (a.gevecht && cfg.eilanddominantie) base = 'CATAN: De Veroveraar';
+  if (allOn) base = 'CATANIA: De Archipel — Complete Editie';
+  else if (a.mythologie) base = 'CATANIA: Goden & Glorie';
+  else if (a.items && a.verzamelen) base = 'CATANIA: De Archipel';
+  else if (a.dreiging && cfg.draak && cfg.monsters) base = 'CATANIA: Monsters & Getijden';
+  else if (cfg.getijden && cfg.voedsel) base = 'CATANIA: Bloed & Getijden';
+  else if (a.gevecht && cfg.eilanddominantie) base = 'CATANIA: De Veroveraar';
 
   return twoPlayer ? base + ' · Duel' : base;
 }

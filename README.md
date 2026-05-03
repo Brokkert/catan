@@ -1,4 +1,4 @@
-# CATAN Custom Uitbreiding Configurator
+# CATANIA — Custom Uitbreiding Configurator
 
 Mobile-first React web-app voor het configureren van een custom Catan-uitbreiding.
 
@@ -21,4 +21,4 @@ npm run build    # productie build
 npm run preview  # serve build
 ```
 
-De dynamische spelnaam past zich realtime aan op basis van welke modules actief zijn (van *CATAN: Onontdekt* tot *CATAN: De Archipel — Complete Editie*).
+De dynamische spelnaam past zich realtime aan op basis van welke modules actief zijn (van *CATANIA: Onontdekt* tot *CATANIA: De Archipel — Complete Editie*).
