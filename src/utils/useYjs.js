@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints, yParams } from './yjsSync.js';
+import { doc, yConfig, yCustomRules, yPrinted, yBank, yMeta, yPrintOverrides, yCustomPrints, yParams, yTileDraws } from './yjsSync.js';
 
 export const DEFAULT_PARAMS = {
   hoofdeiland_tegels: 7,
@@ -99,6 +99,23 @@ export function useYParams() {
     doc.transact(() => { yParams.clear(); });
   }, []);
   return [params, { setParam, resetParams }];
+}
+
+// Tile draws — { itemId: count_drawn }
+export function useYTileDraws() {
+  const draws = useObserved(yTileDraws, () => Object.fromEntries(yTileDraws.entries()));
+  const draw = useCallback((id) => {
+    yTileDraws.set(id, (yTileDraws.get(id) || 0) + 1);
+  }, []);
+  const undo = useCallback((id) => {
+    const n = (yTileDraws.get(id) || 0) - 1;
+    if (n <= 0) yTileDraws.delete(id);
+    else yTileDraws.set(id, n);
+  }, []);
+  const reset = useCallback(() => {
+    doc.transact(() => { yTileDraws.clear(); });
+  }, []);
+  return [draws, { draw, undo, reset }];
 }
 
 // Custom print items — user-added items
