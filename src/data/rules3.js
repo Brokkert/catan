@@ -1,6 +1,7 @@
 // Rules part 3: items (largest group)
 export const RULES_3 = [
   { id: 'itemsysteem', cat: 'items', name: 'Item-systeem', desc: 'Vind via ruïnes/monsters/piraten. Koop bij markt (3🪙). Craft bij smederij. Max 5 actief/speler.', def: true, core: true },
+  { id: 'item_breekbaarheid', cat: 'items', name: 'Item-breekbaarheid', desc: 'Items breken bij specifieke gebeurtenissen aan tafel: Strijdbijl bij eenheid-verlies in gevecht, Schild bij vijand-crit (6+6 worp), Ramsteven bij schip-verlies in zeeslag, Vissersnet bij stormvloed (5-6 getijdenworp), Goudader als rover op die berg komt, Geheime tunnel als spion ontdekt, Medicijnkist bij 3+ ziekte-uitbraak. Token gaat terug naar voorraad — smederij = nieuwe maken.', def: false },
   { id: 'verrekijker', cat: 'items', name: 'Verrekijker', desc: 'Bekijk bovenste 3 tegels trekstapel vóór trekken. Kies welke je plaatst.', def: true },
   { id: 'kompas', cat: 'items', name: 'Kompas', desc: '+1 ontdekkingstegel per verkenningsbeurt.', def: true },
   { id: 'zeekaart', cat: 'items', name: 'Zeekaart', desc: 'Bekijk alle tegels in trekstapel. Eenmalig.', def: true },
