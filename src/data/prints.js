@@ -47,7 +47,7 @@ export const PRINT_ITEMS = [
   { id: 'ruine_hex', name: 'Ruïne-hex', qty: 2, size: 'hex', color: 'mixed', desc: 'Ruïnetegels', custom: true, rule: 'ruine' },
 
   // maalstroom
-  { id: 'maalstroom_hex', name: 'Maalstroom-hex', qty: 1, size: 'hex', color: 'blue', desc: 'Maalstroom', custom: true, rule: 'maalstroom' },
+  { id: 'maalstroom_hex', name: 'Draaikolk-hex', qty: 1, size: 'hex', color: 'blue', desc: 'Gevaarlijk draaiend water', custom: true, rule: 'maalstroom' },
 
   // rif
   { id: 'rif_hex', name: 'Rif-hex (water met stenen)', qty: 2, size: 'hex', color: 'blue', desc: 'Rotsen boven water — gevaarlijk voor schepen', custom: true, rule: 'rif' },
@@ -112,6 +112,9 @@ export const PRINT_ITEMS = [
 
   // karavaan (land-transport)
   { id: 'karavaan_fig', name: 'Karavaan / covered wagon', qty: 2, size: 'medium', color: 'player', desc: 'Huifkar voor land-cargo-transport over wegen', stl: STL_WAGON, rule: 'karavaan', perPlayer: true },
+
+  // havenvoorraad
+  { id: 'haven_bakje', name: 'Haven-voorraadbakje', qty: 5, size: 'medium', color: 'mixed', desc: 'Klein bakje met 5 vakken (1 per grondstof) dat naast/op een haven staat. Toont zichtbaar de huidige voorraad — droppen via cargo, leeghalen via ruil.', custom: true, rule: 'havenvoorraad' },
 
   // seizoensrad
   { id: 'seizoensrad_fig', name: 'Seizoensrad + wijzer', qty: 1, size: 'large', color: 'mixed', desc: '~60mm ø draaibaar', custom: true, rule: 'seizoensrad' },

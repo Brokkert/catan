@@ -23,14 +23,14 @@ const TILE_ITEMS = [
   { id: 'water_hex', kind: 'water', sub: 'water' },
   { id: 'koraal_hex', kind: 'water', sub: 'koraal' },
   { id: 'rif_hex', kind: 'water', sub: 'rif' },
-  { id: 'maalstroom_hex', kind: 'water', sub: 'maalstroom' },
+  { id: 'maalstroom_hex', kind: 'water', sub: 'draaikolk' },
 ];
 
 export const NEIGHBOR_OPTIONS = [
   { id: 'water', emoji: '🌊', label: 'Water (open zee)' },
   { id: 'koraal', emoji: '🐟', label: 'Koraalrif' },
   { id: 'rif', emoji: '🪨', label: 'Rif (rotsen)' },
-  { id: 'maalstroom', emoji: '🌀', label: 'Maalstroom' },
+  { id: 'draaikolk', emoji: '🌀', label: 'Draaikolk' },
   { id: 'bos', emoji: '🌲', label: 'Bos' },
   { id: 'akkers', emoji: '🌾', label: 'Akkers' },
   { id: 'weiden', emoji: '🐑', label: 'Weiden' },
@@ -66,8 +66,8 @@ function applyWeights(pool, neighbors) {
     if (counts.rif && tile.kind === 'land') weight *= 1.6;
     if (counts.rif && tile.sub === 'water') weight *= 0.5;
     if (counts.koraal && tile.kind === 'land') weight *= 1.3;
-    if (counts.maalstroom && tile.kind === 'water') weight *= 1.5;
-    if (counts.maalstroom && tile.kind === 'land') weight *= 0.5;
+    if (counts.draaikolk && tile.kind === 'water') weight *= 1.5;
+    if (counts.draaikolk && tile.kind === 'land') weight *= 0.5;
     if (counts.vulkaan && (tile.sub === 'bergen' || tile.sub === 'heuvels')) weight *= 2.0;
     if ((counts.water || 0) >= 3 && tile.kind === 'water') weight *= 1.4;
     if ((counts.water || 0) >= 4 && tile.kind === 'land') weight *= 0.6;
