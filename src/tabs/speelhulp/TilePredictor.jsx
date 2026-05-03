@@ -41,7 +41,7 @@ export default function TilePredictor({ config }) {
       <h2 style={{ marginTop: 0 }}>🧭 Trek volgende tegel</h2>
       <p className="small muted">
         Selecteer wat er rond je positie ligt — de kans op de volgende tegel past zich aan op realistische geo-logica
-        (rif → kust dichtbij, maalstroom → diepe zee, etc.).
+        (rif → kust dichtbij, vulkaan → bergen in buurt, etc.).
       </p>
 
       <div className="row between mt mb">

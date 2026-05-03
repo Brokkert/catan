@@ -20,13 +20,13 @@ export const PRESETS = [
     id: 'ontdekker',
     name: '🏝️ Ontdekker',
     time: '90 min',
-    rules: ['procedureel','vulkaan','ruine','maalstroom','handelspost','goudmijn','vis','specerij','goud','goudrivier','scheepswerf','handelsschip','vissersboot','seizoensrad'],
+    rules: ['procedureel','vulkaan','ruine','rif','handelspost','goudmijn','vis','specerij','goud','goudrivier','scheepswerf','handelsschip','vissersboot','seizoensrad'],
   },
   {
     id: 'veroveraar',
     name: '⚔️ Veroveraar',
     time: '2 uur',
-    rules: ['procedureel','vulkaan','ruine','maalstroom','piratenschuilplaats','goudmijn','vis','specerij','goud','scheepswerf','handelsschip','oorlogsschip','vuurtoren','troepentransport','zeeslagen','piraat','monsters','pvp','militie','boogschutter','katapult','scheepssoldaat','huurlingen','plundering','eilanddominantie','versterking','fort','palissade','legerkamp','stadsmuur'],
+    rules: ['procedureel','vulkaan','ruine','rif','piratenschuilplaats','goudmijn','vis','specerij','goud','scheepswerf','handelsschip','oorlogsschip','vuurtoren','troepentransport','zeeslagen','piraat','monsters','pvp','militie','boogschutter','katapult','scheepssoldaat','huurlingen','plundering','eilanddominantie','versterking','fort','palissade','legerkamp','stadsmuur'],
   },
   {
     id: 'meesterbrein',
@@ -38,7 +38,7 @@ export const PRESETS = [
     id: 'overlever',
     name: '🌊 Overlever',
     time: '2 uur',
-    rules: ['procedureel','vulkaan','ruine','maalstroom','vis','specerij','goud','scheepswerf','handelsschip','vissersboot','getijden','getijdenmarkers','piraat','voedsel','seizoensrad','ziekte','winterhard','dijk','voorraadschuur','medicijnkist','regenton','vuurpot','reddingsboot'],
+    rules: ['procedureel','vulkaan','ruine','rif','vis','specerij','goud','scheepswerf','handelsschip','vissersboot','getijden','getijdenmarkers','piraat','voedsel','seizoensrad','ziekte','winterhard','dijk','voorraadschuur','medicijnkist','regenton','vuurpot','reddingsboot'],
   },
   {
     id: 'mythisch',

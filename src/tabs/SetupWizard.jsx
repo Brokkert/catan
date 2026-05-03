@@ -215,7 +215,6 @@ function buildSteps(cfg, qty, params, mainSeed, reshuffle, activeItems, printed)
               );
             })()}
             {cfg.ruine && <li>Ruïnes: <b>{qty('ruine_hex', 2)}</b></li>}
-            {cfg.maalstroom && <li>Maalstroom: <b>{qty('maalstroom_hex', 1)}</b></li>}
             {cfg.rif && <li>Rif (stenen): <b>{qty('rif_hex', 2)}</b></li>}
             {cfg.piratenschuilplaats && <li>Piratenschuilplaats: <b>{qty('piraat_hex', 1)}</b></li>}
             {cfg.drakenei && <li>Drakenei: <b>{qty('drakenei_hex', 1)}</b></li>}

@@ -12,8 +12,6 @@ const TYPE_STYLES = {
   water: { color: '#2a5a8a', shade: '#174068', emoji: '', water: true },
   koraal: { color: '#2a7099', shade: '#174a6a', emoji: '🐟', water: true },
   rif: { color: '#355a75', shade: '#1a3a55', emoji: '🪨', water: true },
-  maalstroom: { color: '#1a3a5a', shade: '#0a1f35', emoji: '🌀', water: true },
-  draaikolk: { color: '#1a3a5a', shade: '#0a1f35', emoji: '🌀', water: true },
   jungle: { color: '#1e4a1e', shade: '#0c2d0c', emoji: '🌴' },
   ruine: { color: '#5a4a3a', shade: '#2f251c', emoji: '🏛️' },
   goudmijn: { color: '#8a6a1a', shade: '#5a4010', emoji: '💰' },

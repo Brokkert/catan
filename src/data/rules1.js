@@ -4,7 +4,6 @@ export const RULES_1 = [
   { id: 'procedureel', cat: 'bord', name: 'Procedurele ontdekking', desc: 'Begin met alleen hoofdeiland + waterring. Alle ontdekkingstegels leg je vooraf in willekeurige volgorde in de Ontdekking-bak (volgorde is voor iedereen onbekend). Tijdens spel pak je de volgende tegel uit het eerstvolgende vak. Elke game verloopt anders.', def: true, core: true },
   { id: 'vulkaan', cat: 'bord', name: 'Vulkaan', desc: 'Vervangt woestijn. Geen productie, rover start erop. Bij twee 7\'s achter elkaar: uitbarsting vernietigt aangrenzende gebouwen + lavategel.', def: true },
   { id: 'ruine', cat: 'bord', name: 'Ruïne-tegels (2×)', desc: 'In trekstapel. Geeft reliek of items bij ontdekking. Geen productie.', def: true },
-  { id: 'maalstroom', cat: 'bord', name: 'Draaikolk-tegel', desc: 'Permanent gevaarlijk water. Schip dat erop vaart: reddingsworp 1-2 = vernietigd, 3-6 = veilig.', def: true },
   { id: 'rif', cat: 'bord', name: 'Rif-tegel (rotsen)', desc: 'Watertegel met stenen. Schip dat erdoor vaart: reddingsworp 1-2 = beschadigd (terug naar thuishaven), 3-6 = veilig.', def: true },
   { id: 'piratenschuilplaats', cat: 'bord', name: 'Piratenschuilplaats-tegel', desc: 'Bij ontdekking: piratenbasis. Verover met oorlogsschip + kracht 4 om piraat permanent te verwijderen.', def: true },
   { id: 'drakenei', cat: 'bord', name: 'Drakenei-tegel', desc: 'Bij ontdekking: ei broedt 4 rondes. Daarna verschijnt draak op vulkaan als eindgame-boss. Vernietig ei (kracht 3) om dit te voorkomen.', def: true },

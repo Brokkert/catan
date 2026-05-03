@@ -4,7 +4,7 @@ export const RULES_3 = [
   { id: 'verrekijker', cat: 'items', name: 'Verrekijker', desc: 'Bekijk bovenste 3 tegels trekstapel vóór trekken. Kies welke je plaatst.', def: true },
   { id: 'kompas', cat: 'items', name: 'Kompas', desc: '+1 ontdekkingstegel per verkenningsbeurt.', def: true },
   { id: 'zeekaart', cat: 'items', name: 'Zeekaart', desc: 'Bekijk alle tegels in trekstapel. Eenmalig.', def: true },
-  { id: 'duikersuitrusting', cat: 'items', name: 'Duikersuitrusting', desc: 'Veilig op maalstroom. Koraalrif geeft 3 vis i.p.v. 2.', def: true },
+  { id: 'duikersuitrusting', cat: 'items', name: 'Duikersuitrusting', desc: 'Veilig op rif. Koraalrif geeft 3 vis i.p.v. 2.', def: true },
   { id: 'strijdbijl', cat: 'items', name: 'Strijdbijl (craft)', desc: '+1 hoogste aanvaldobbelsteen. Craft: 2⛰️1🪵.', def: true },
   { id: 'schild', cat: 'items', name: 'Schild van Catan (craft)', desc: '+1 hoogste verdedigingsdobbelsteen. Craft: 3⛰️1🐑.', def: true },
   { id: 'vergiftigdepijlen', cat: 'items', name: 'Vergiftigde pijlen', desc: 'Eenmalig: verdediger -1 eenheid vóór gevecht.', def: true },
