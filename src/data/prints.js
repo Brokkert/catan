@@ -47,7 +47,7 @@ export const PRINT_ITEMS = [
   { id: 'ruine_hex', name: 'Ruïne-hex', qty: 2, size: 'hex', color: 'mixed', desc: 'Ruïnetegels', custom: true, rule: 'ruine' },
 
   // maalstroom
-  { id: 'maalstroom_hex', name: 'Draaikolk-hex', qty: 1, size: 'hex', color: 'blue', desc: 'Gevaarlijk draaiend water', custom: true, rule: 'maalstroom' },
+  { id: 'maalstroom_hex', name: 'Draaikolk-hex', qty: 1, size: 'hex', color: 'blue', desc: 'Gevaarlijk draaiend water. Remix-tip: Sea Monster water tile als basis, of print een spiral-token en lijm op standaard watertegel.', custom: true, stl: 'https://www.thingiverse.com/thing:4853455', rule: 'maalstroom' },
 
   // rif
   { id: 'rif_hex', name: 'Rif-hex (water met stenen)', qty: 2, size: 'hex', color: 'blue', desc: 'Rotsen boven water — gevaarlijk voor schepen', custom: true, rule: 'rif' },
